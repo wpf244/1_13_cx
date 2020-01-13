@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{include file="public:header"}
+
+<body class="pad_btm bg_normal">
+
+		<div class="back_box">
+				
+				<ul class="bread">
+						<li>
+						 <a href="{:url('Index/index')}">首页</a>&nbsp;&gt;
+						</li>
+						<li>
+						 <a href="javascript:;">个人中心</a>
+						</li>
+						
+					   </ul>
+			</div>
+
+	<!-- 公共顶部 -->
+{include file="public:top"}
+
+	<div class="user_top flex_normal bg_cover" style="background-image:url(__HOME__/img/user_bg.png);">
+		<!-- 未登录显示 -->
+		{if condition="$re.image eq '' "}
+		<img class="bd_radius_50 mar_rt_12" src="__HOME__/img/thumb_none.png" width="70" height="70" alt="">
+		{else /}
+		<img class="bd_radius_50 mar_rt_12" src="{$re.image}" width="70" height="70" alt="">
+		{/if}
+		<div class="flex_1">
+			{if condition="$re.nickname eq '' "}
+			<a class="am-text-lg font_bold mar_btm_6" href="{:url('User/infor_change')}" >请设置昵称</a>
+			{else /}
+			<h4 class="am-text-lg font_bold mar_btm_6">{$re.nickname}</h4>
+			{/if}
+			<div class="">Hi~等你好久了~</div>
+		</div>
+	</div>
+
+	<div class="mar_btm_12">
+		<a class="p_12 bd_btm flex_between bg_white" href="{:url('User/hotel_dd')}">
+			<div class="flex_normal">
+				<img class="mar_rt_12" src="__HOME__/img/icon_travel.png" width="16" height="16" alt=""><span>酒店订单</span>
+			</div>
+			<img src="__HOME__/img/icon_right.png" width="6" height="11" alt="">
+		</a>
+		
+		<a class="p_12 bd_btm flex_between bg_white" href="{:url('User/package_dd')}">
+			<div class="flex_normal">
+				<img class="mar_rt_12" src="__HOME__/img/icon_order.png" width="16" height="16" alt=""><span>团游订单</span>
+			</div>
+			<img src="__HOME__/img/icon_right.png" width="6" height="11" alt="">
+		</a>
+		
+		<a class="p_12 bd_btm flex_between bg_white" href="{:url('User/spot_dd')}">
+			<div class="flex_normal">
+				<img class="mar_rt_12" src="__HOME__/img/icon_log.png" width="16" height="16" alt=""><span>门票订单</span>
+			</div>
+			<img src="__HOME__/img/icon_right.png" width="6" height="11" alt="">
+		</a>
+
+		<a class="p_12 bd_btm flex_between bg_white" href="{:url('User/bargain_dd')}">
+			<div class="flex_normal">
+				<img class="mar_rt_12" src="__HOME__/img/icon_dope.png" width="16" height="16" alt=""><span>砍价订单</span>
+			</div>
+			<img src="__HOME__/img/icon_right.png" width="6" height="11" alt="">
+		</a>
+		<a class="p_12 bd_btm flex_between bg_white" href="{:url('User/assemble_dd')}">
+			<div class="flex_normal">
+				<img class="mar_rt_12" src="__HOME__/img/icon_collect.png" width="16" height="16" alt=""><span>拼团订单</span>
+			</div>
+			<img src="__HOME__/img/icon_right.png" width="6" height="11" alt="">
+		</a>
+		<a class="p_12 bd_btm flex_between bg_white" href="{:url('User/food_dd')}">
+			<div class="flex_normal">
+				<img class="mar_rt_12" src="__HOME__/img/icon_log.png" width="16" height="16" alt=""><span>美食订单</span>
+			</div>
+			<img src="__HOME__/img/icon_right.png" width="6" height="11" alt="">
+		</a>
+	</div>
+
+	<div class="bd_btm_10">
+			<a class="p_12 bd_btm flex_between bg_white" href="{:url('User/my_publish')}">
+				<div class="flex_normal">
+					<img class="mar_rt_12" src="__HOME__/img/icon_infor.png" width="16" height="16" alt=""><span>我的发布</span>
+				</div>
+				<img src="__HOME__/img/icon_right.png" width="6" height="11" alt="">
+			</a>
+			<a class="p_12 bd_btm flex_between bg_white" href="{:url('User/my_collcet')}">
+				<div class="flex_normal">
+					<img class="mar_rt_12" src="__HOME__/img/icon_collects.png" width="16" height="16" alt=""><span>我的收藏</span>
+				</div>
+				<img src="__HOME__/img/icon_right.png" width="6" height="11" alt="">
+			</a>
+			<a class="p_12 bd_btm flex_between bg_white" href="{:url('User/my_comment')}">
+				<div class="flex_normal">
+					<img class="mar_rt_12" src="__HOME__/img/icon-comment.png" width="16" height="16" alt=""><span>我的评论</span>
+				</div>
+				<img src="__HOME__/img/icon_right.png" width="6" height="11" alt="">
+			</a>
+		
+		<a class="p_12 bd_btm flex_between bg_white" href="{:url('User/my_coupon')}">
+			<div class="flex_normal">
+				<img class="mar_rt_12" src="__HOME__/img/icon_order.png" width="16" height="16" alt=""><span>优惠券</span>
+			</div>
+			<img src="__HOME__/img/icon_right.png" width="6" height="11" alt="">
+		</a>
+	</div>
+
+	<div class="bd_btm_10">
+		<a class="p_12 bd_btm flex_between bg_white" href="{:url('User/my_setting')}">
+			<div class="flex_normal">
+				<img class="mar_rt_12" src="__HOME__/img/icon_setting.png" width="16" height="16" alt=""><span>通用设置</span>
+			</div>
+			<img src="__HOME__/img/icon_right.png" width="6" height="11" alt="">
+		</a>
+		<a class="p_12 bd_btm flex_between bg_white" href="http://wpa.qq.com/msgrd?v=3&uin={$sys.qq}&site=qq&menu=yes">
+			<div class="flex_normal">
+				<img class="mar_rt_12" src="__HOME__/img/icon_seek.png" width="16" height="16" alt=""><span>客服咨询</span>
+			</div>
+			<img src="__HOME__/img/icon_right.png" width="6" height="11" alt="">
+		</a>
+		<a class="p_12 bd_btm flex_between bg_white" {empty name="$com['phone']"} href="tel:{$sys.phone}" {else /} href="tel:{$com.phone}" {/empty} >
+				<div class="flex_normal">
+					<img class="mar_rt_12" src="__HOME__/img/icon_tousu.png" width="16" height="16" alt=""><span>投诉电话</span>
+				</div>
+				<span class="col_nine ">{empty name="$com['phone']"}{$sys.phone} {else /} {$com.phone} {/empty}</span>
+			</a>
+	</div>
+
+
+	<!-- 底部导航 -->
+{include file="public:footer"}
+
+
+</body>
+
+</html>

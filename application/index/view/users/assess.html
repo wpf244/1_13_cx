@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{include file="public:header"}
+
+<body class="bg_normal">
+
+	<!-- 返回 -->
+	<div class="back_box">
+		
+		<ul class="bread">
+				<li>
+				 <a href="{:url('Index/index')}">首页</a>&nbsp;&gt;
+				</li>
+				<li>
+				 <a href="{:url('Users/indexs')}">个人中心</a>&nbsp;&gt;
+				</li>
+				<li>
+				<a href="javascript:;">发表评价</a>
+				</li>
+			   </ul>
+	</div>
+
+	<form action="{:url('Users/save_assess')}" id="logoForm" method="POST" enctype="multipart/form-data" class="bg_white">
+		<div class="p_12 flex_between">
+			<span>订单号：{$re.code}</span><button type="submit" class="col_main">提交</button>
+		</div>
+		<input name="did" type="hidden" value="{$re.did}" />
+		{volist name="res" id="v" key="k"}
+		
+		<div class="order_goods">
+	<img class="mar_rt_12" src="{$v.simage}" width="90" height="90" alt="">
+	<div class="flex_1">
+		<div class="order_wrap">
+			<div class="flex_1">
+				<div class="flex_between">
+					<h5 class="am-text-truncate">{$v.gname}</h5>
+					<span class="mar_lt_12">￥{$v.price}</span>
+				</div>
+				<div class="order_desc  col_nine">
+					<h6>{$v.sname}</h6>
+				
+				</div>
+			</div>
+			<div class="am-text-right col_nine ">X{$v.num}</div>
+		</div>
+	</div>
+</div>
+{/volist}
+		<textarea class="p_12" style="height: 140px;" name="content" placeholder="说说你的购买心得，分享给想买的他们吧..." ></textarea>
+
+		<!-- 上传图片 -->
+		<div class="custom_img p_12">
+			<div class="custom_img_top mar_btm_12">
+				<h5 class="">上传宝贝秀</h5>
+			</div>
+
+			<!--点击上传图片 触发下面的div 点击事件-->
+			<div class="z_container">
+				<!--    照片添加    -->
+				<div class="z_photo">
+					<div class="z_file">
+						<input type="file" name="image[]" id="file" value="" accept="image/*" multiple onchange="imgChange('z_photo','z_file');" />
+					</div>
+				</div>
+
+				<!--遮罩层-->
+				<div class="z_mask">
+					<!--弹出框-->
+					<div class="z_alert">
+						<p>确定要删除这张图片吗？</p>
+						<p>
+							<span class="z_cancel">取消</span>
+							<span class="z_sure">确定</span>
+						</p>
+					</div>
+				</div>
+			</div>
+
+		</div>
+
+		<div class="flex_normal p_12">
+			<span class="made_lb">商品评价</span>
+			<ul class="star-box" id="star">
+				<li class="star-list"></li>
+				<li class="star-list"></li>
+				<li class="star-list"></li>
+				<li class="star-list"></li>
+				<li class="star-list"></li>
+			</ul>
+		</div>
+       
+		<input name="num" type="hidden" id="num" value="5" />
+
+	
+	</form>
+
+	<script type="text/javascript">
+		function imgChange(obj1, obj2) {
+			//获取点击的文本框
+			var file = document.getElementById("file");
+			//存放图片的父级元素
+			var imgContainer = document.getElementsByClassName(obj1)[0];
+			//获取的图片文件
+			var fileList = file.files;
+			//文本框的父级元素
+			var input = document.getElementsByClassName(obj2)[0];
+			var imgArr = [];
+			//遍历获取到得图片文件
+			for (var i = 0; i < fileList.length; i++) {
+				var imgUrl = window.URL.createObjectURL(file.files[i]);
+				imgArr.push(imgUrl);
+				var img = document.createElement("img");
+				img.setAttribute("src", imgArr[i]);
+				var imgAdd = document.createElement("div");
+				imgAdd.setAttribute("class", "z_addImg");
+				imgAdd.appendChild(img);
+				imgContainer.appendChild(imgAdd);
+			};
+			imgRemove();
+		};
+
+		function imgRemove() {
+			var imgList = document.getElementsByClassName("z_addImg");
+			var mask = document.getElementsByClassName("z_mask")[0];
+			var cancel = document.getElementsByClassName("z_cancel")[0];
+			var sure = document.getElementsByClassName("z_sure")[0];
+			for (var j = 0; j < imgList.length; j++) {
+				imgList[j].index = j;
+				imgList[j].onclick = function () {
+					var t = this;
+					mask.style.display = "block";
+					cancel.onclick = function () {
+						mask.style.display = "none";
+					};
+					sure.onclick = function () {
+						mask.style.display = "none";
+						t.remove();
+					};
+
+				}
+			};
+		};
+	</script>
+
+	<script>
+		$(function () {
+
+			// 评价星星
+			var num = 5;
+			var lightOn = function (num) {
+				$('.star-list').each(function (index) {
+					if (index < num) {
+						$(this).css('background-position', '0 -24px');
+					} else {
+						$(this).css('background-position', '0 0');
+					}
+				});
+			}
+
+			lightOn(num);
+
+			$('#star').on('click', '.star-list', function () {
+				num = $(this).index() + 1;
+				lightOn(num)
+
+				$("#num").val(num);
+			})
+
+            
+			
+		})
+	</script>
+
+	<script>
+		$('#logoForm').ajaxForm({
+		beforeSubmit: checkForm, // 此方法主要是提交前执行的方法，根据需要设置
+		success: complete, // 这是提交后的方法
+		dataType: 'json'
+	});
+
+	function checkForm() {
+			
+			var content = $('textarea[name=content]').val();
+
+			if($.trim(content).length > 500 || $.trim(content).length == 0){
+				layer.msg("评价内容不得为空或超过500字");
+				return false;
+			}
+
+	}
+
+	function complete(data) {
+		if (data.code == 1) {
+			layer.alert(data.msg, {
+				icon: 6
+			}, function (index) {
+				layer.close(index);
+				window.location.href = data.url;
+			});
+
+		} else {
+			layer.alert(data.msg, {
+				icon: 5
+			}, function (index) {
+				layer.close(index);
+				window.location.href = data.url;
+			});
+
+		}
+	}
+
+    </script>
+
+</body>
+
+</html>

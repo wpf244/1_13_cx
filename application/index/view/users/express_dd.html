@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{include file="public:header"}
+
+<body class="">
+
+	<!-- 返回 -->
+	<div class="back_box">
+			<ul class="bread">
+					<li>
+					 <a href="{:url('Index/index')}">首页</a>&nbsp;&gt;
+					</li>
+					<li>
+					 <a href="{:url('Users/indexs')}">个人中心</a>&nbsp;&gt;
+					</li>
+					<li>
+					<a href="javascript:;">运费订单</a>
+					</li>
+				   </ul>
+	</div>
+
+	<div class="order_menu">
+			<a href="{:url('Users/express_dd')}" class="order_single active">待支付</a>
+			<a href="{:url('Users/express_dds')}" class="order_single">已支付</a>
+
+		</div>
+
+	<ul class="order_list">
+	  {volist name="res" id="v"}	
+		<li class="order_danyuan bd_btm_10">
+			<div class="flex_between p_12">
+				<h6>订单号：{$v.code}</h6><span class="col_main ">订单金额：{$v.zprice}</span>
+			</div>
+
+			<div class="p_12 bd_btm am-text-right">
+
+				运费：<span class="col_main am-text-lg">￥{$v.fare}</span>
+			</div>
+			<div class="p_12 am-text-right">
+					<a href="{:url('Users/dd_detail',array('did'=>$v['did']))}" class="order_cancle am-btn am-btn-xs am-round am-btn-default">订单详情</a>
+					<a href="{:url('Pay/express_dd',array('id'=>$v['id']))}" class="order_pay am-btn am-btn-xs am-round am-btn-danger">去支付</a>
+				</div>
+		</li>
+		{/volist}
+	</ul>
+
+	<div class="no_data">暂无更多订单~</div>
+
+
+
+</body>
+
+</html>

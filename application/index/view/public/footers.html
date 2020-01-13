@@ -1,0 +1,28 @@
+<div class="btm_wrap bd_top bg_white">
+        <ul class="btm_nav flex_around ">
+                {if condition="ACTION_NAME eq 'index' AND CONTROLLER_NAME eq 'Index' "}<li class="btm_cell active "> {else /} <li class="btm_cell"> {/if}
+                <a href="{:url('Index/index')}">
+                    <div class="btm_bg index"></div>
+                    <h5>首页</h5>
+                </a>
+            </li>
+            {if condition="ACTION_NAME eq 'kind' "}<li class="btm_cell active "> {else /} <li class="btm_cell"> {/if}
+                <a href="{:url('Index/kind')}">
+                    <div class="btm_bg news"></div>
+                    <h5>分类</h5>
+                </a>
+            </li>
+            {if condition="CONTROLLER_NAME eq 'Shop' "}<li class="btm_cell active "> {else /} <li class="btm_cell"> {/if}
+                <a href="{:url('Shop/index')}">
+                    <div class="btm_bg cart"></div>
+                    <h5>进货单</h5>
+                </a>
+            </li>
+            {if condition="CONTROLLER_NAME eq 'Users' "}<li class="btm_cell active "> {else /} <li class="btm_cell"> {/if}
+                <a href="{:url('Users/indexs')}">
+                    <div class="btm_bg user"></div>
+                    <h5>个人中心</h5>
+                </a>
+            </li>
+        </ul>
+    </div>

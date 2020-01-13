@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{include file="public:header"}
+
+<body class="" style="padding-bottom: 50px;">
+
+	<!-- 返回 -->
+	<div class="back_box">
+		
+		<ul class="bread">
+				<li>
+				 <a href="{:url('Index/index')}">首页</a>&nbsp;&gt;
+				</li>
+
+				 <a href="javascript:;">进货单</a>
+				</li>
+				
+			   </ul>
+	</div>
+ {notempty name="$res"}
+	<div class="cart-box">
+		<div class="cart">
+			<div class="cart-content">
+			  {volist name="res" id="v"}	
+				<div class="cart-list am-cf">
+					<div class="cart-proj">
+						<div class="order-project flex_around">
+							<div class="order-choice">
+								<div class="order-box">
+									<input type="checkbox" name="order-choice" value="{$v.cid}" {if condition="$v.status eq 1"}checked{/if} class="js-form" />
+								</div>
+							</div>
+							<img class="order-pic" src="{$v.s_image}" alt="" />
+							<div class="order-cont">
+								<h6 class="order-title">{$v.c_name}&nbsp;{$v.code} ({$v.type})</h6>
+								<div class="order-list">
+									<div class="order-item">
+										<span class="order-cell">{$v.specs}</span>
+									
+									</div>
+								</div>
+								<div class="order-kind flex_between">
+									<p class="order-mark">¥<span>{$v.price}</span></p>
+									<div class="cart-num">
+										<div class="num_form flex_between">
+	<a href="javascript:;" data-id="{$v.cid}" class="num_minus">-</a>
+	<input type="number" name="" id="" value="{$v.num}" readonly oninput="if(value.length>3)value=value.slice(0,5)" class="num_ipt" />
+	<a href="javascript:;" data-id="{$v.cid}" class="num_plus">+</a>
+</div>
+									</div>
+									<div class="cart-del am-text-right am-text-xs" onclick="dels({$v.cid})">
+										删除
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="cart-totle am-text-right">¥<span>{$v.prices}</span></div>
+				</div>
+		     {/volist}
+			</div>
+		</div>
+	</div>
+ {else /}
+ 
+	<!-- 购物车为空时显示 -->
+	<div class="cart-none" >
+		<div class="cart-img">
+			<img src="__HOME__/img/cart-none.png" alt="" />
+		</div>
+		<div class="cart-text am-text-xs am-text-center">
+			进货单空空如也
+		</div>
+		<p class="cart-back">
+			<a href="{:url('Index/index')}">
+				去首页逛逛
+			</a>
+		</p>
+	</div>
+
+	{/notempty}	
+	<!-- 购物车为空时显示 -->
+
+	<!-- 底部全选 -->
+	<div class="account flex_between">
+		<div class="account-choose">
+			<h5 class="account-choice">
+				<input type="checkbox" name="order-choice" id="quan" {if condition="$quan eq 1"} checked  {/if} class="js-order" />
+			</h5>
+			<p class="account-text am-text-xs am-text-center">
+				全选
+			</p>
+		</div>
+		<div class="flex_1 am-text-right">
+			总计：<span class="col_main am-text-lg">￥</span><span class="account-price">{$money}</span>
+		</div>
+
+		<div {if condition="$money eq 0"} class="account-btn" {else /} class="account-btn btn_sty" {/if} >结算</div>
+	</div>
+	
+	<script>
+			function dels(id){
+				layer.confirm('你确定删除吗？', {icon: 3}, function(index){
+					layer.close(index);
+					$.ajax({
+						type:"post",
+						url:"{:url('Shop/delete')}",
+						data:{id:id},
+						datatype:"text",
+						success:function(re){
+							if(re == 0){
+								location.reload();
+							}else{
+								layer.msg("系统繁忙请稍后再试");location.reload();
+							}
+						}
+					})
+				});
+			}
+
+			$("#quan").click(function(){
+				var quan = $("#quan").is(':checked');
+                if(quan){
+					var status=1;
+				}else{
+					var status=0;
+				}
+				
+					$.ajax({
+						type:"post",
+						url:"{:url('Shop/change_all')}",
+						data:{status:status},
+						dataType:"text",
+						success:function(){
+							
+						}
+					})
+			})
+	</script>
+	<script>
+		//单件商品总价
+		function itemTotal(num, price) {
+			return parseInt(num) * parseFloat(price);
+		}
+		//=======总计=============
+		function totalMoney() {
+			//总价
+			var calprice = $('.account-price'),
+				calBtn = $('.account-btn');
+			var total_money = 0;
+			var totalItem = $(".cart-totle span");
+			for (let i = 0, len = totalItem.length; i < len; i++) {
+				let item = totalItem.eq(i);
+				if (item.parents('.cart-list').find('.js-form').prop('checked')) {
+					let price = parseFloat(item.text())
+					total_money += price;
+				}
+			}
+			calprice.html(total_money.toFixed(2));
+			changeClass(calBtn, total_money, 'btn_sty');
+		}
+
+		function changeClass(obj, price, classname) {
+			let res = price > 0;
+			if (res) {
+				obj.addClass(classname);
+			} else {
+				obj.removeClass(classname);
+			}
+		}
+
+		function closeM() {
+			$('.model_bg').fadeOut(300);
+			$('.my_model').fadeOut(300);
+		}
+		$(function () {
+			// $('.cart-none').hide();
+			var selectAll = $('.js-order'), //全选按钮
+				selectShop = $('.js-all'), //店铺全选
+				$sonCheckBox = $('.js-form'); //单选按钮
+			$('.cart-list').each(function (index, item) {
+				var _this = $(this),
+					selectOne = _this.find('.js-form'),
+					priceOne = _this.find('.order-mark').text().substr(1),
+					priceTotal = _this.find(".cart-totle span"),
+					countInput = _this.find('.num_ipt'),
+					count = countInput.val() - 0,
+					changeBtn = _this.find('.num_form a');
+				//单选事件
+				selectOne.click(function () {
+					var cid = $(this).val();
+
+					$.ajax({
+						type:"post",
+						url:"{:url('Shop/change')}",
+						data:{cid:cid},
+						dataType:"text",
+						success:function(){
+
+						}
+					})
+					
+					if ($(this).prop('checked')) {
+						let total = itemTotal(count, priceOne);
+						priceTotal.html(total.toFixed(2));
+					}
+					selectAll.prop('checked', $('.js-form:checked').length == $sonCheckBox.length);
+					totalMoney();
+				});
+				//加减事件
+				changeBtn.click(function () {
+
+                    var cid = $(this).data("id");
+
+					if ($(this).hasClass('num_plus')) {
+						countInput.val(count += 1);
+
+						$.ajax({
+							type:"post",
+							url:"{:url('Shop/add')}",
+							data:{cid:cid},
+							dataType:"text",
+							success:function(){
+
+							}
+						})
+						
+					}
+					if ($(this).hasClass('num_minus') && count > 1) {
+						countInput.val(count -= 1);
+						$.ajax({
+							type:"post",
+							url:"{:url('Shop/reduct')}",
+							data:{cid:cid},
+							dataType:"text",
+							success:function(){
+
+							}
+						})
+					}
+					let total = itemTotal(count, priceOne);
+					priceTotal.html(total.toFixed(2));
+					totalMoney();
+				});
+				//=====底部全选商品================================
+				selectAll.click(function () {
+					
+					$("input:checkbox").prop("checked", $(this).prop('checked'));
+					let total = itemTotal(count, priceOne);
+					priceTotal.html(total.toFixed(2));
+					totalMoney();
+				});
+			});
+
+
+			$(".cart-box :checkbox").click(function () {
+				selectAll.prop("checked", $(".cart-box :checked").length == $(".cart-box :checkbox").length);
+				totalMoney();
+			})
+
+			//===============移除商品======================
+			var $order_lists = null;
+			var $order_content = '';
+			$('.cart-del').click(function () {
+				$order_lists = $(this).parents('.cart-list');
+				$order_content = $order_lists.parents('.cart-content');
+				$('.model_bg').fadeIn(300);
+				$('.my_model').fadeIn(300);
+			});
+
+			//关闭模态框
+			$('.closeModel').click(function () {
+				closeM();
+			});
+			$('.dialog-close').click(function () {
+				closeM();
+			});
+
+			//确定按钮，移除商品
+			$('.dialog-sure').click(function () {
+				$order_lists.remove();
+				if ($order_content.html().trim() == null || $order_content.html().trim().length == 0) {
+					$order_content.parents('.cart').remove();
+				}
+				closeM();
+				$sonCheckBox = $('.js-form');
+
+				if ($sonCheckBox.length == 0) {
+					selectAll.prop("checked", false);
+					// selectAll.prev('label').removeClass('mark');
+					$('.cart-none').show()
+					$('.account').hide()
+				} else {
+					$('.account').show()
+					$('.cart-none').hide()
+				}
+				totalMoney();
+			})
+
+			// 结算按钮
+			$('.account-btn').click(function(){
+				if($(this).hasClass('btn_sty')) {
+					window.location.href = "{:url('Shop/buy')}"
+				} else {
+					layer.msg('请选择购买的商品哦~~')
+					return
+				}
+			})
+
+		});
+	</script>
+	<!-- 底部导航 -->
+	{include file="public:footers"}
+</body>
+
+</html>

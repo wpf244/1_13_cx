@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{include file="public:header"}
+<link rel="stylesheet" href="__HOME__/css/express.css">
+<body class="">
+
+<!-- 返回 -->
+<div class="back_box">
+    <ul class="bread">
+        <li>
+            <a href="{:url('Index/index')}">首页</a>&nbsp;&gt;
+        </li>
+        <li>
+            <a href="{:url('Users/indexs')}">个人中心</a>&nbsp;&gt;
+        </li>
+        <li>
+            <a href="javascript:;">物流详情</a>
+        </li>
+    </ul>
+</div>
+
+<div id="main" class="container">
+    <div class="main">
+
+        <div class="flex cominfo">
+            <div class="logo"
+                 style="background-image: url('https://cdn.kuaidi100.com/images/all/56/{$dd.express_code}.png');"></div>
+            <div class="text">
+                <div class="name">{$dd.express}</div>
+                <div class="select-wrap">{$dd.number}</div>
+            </div>
+
+        </div>
+        <section class="result-box">
+            <div class="result-success" style="">
+                <div id="resultTop" class="flex result-top">
+                    <time class="up">时间</time>
+                    <span>地点和跟踪进度</span></div>
+                <ul class="result-list sortup">
+                   {volist name="data" id="v" key="k" }
+                    <li {if condition="$k eq 1"} class="last finish" {/if} >
+                        <div class="time">
+                            <div>{$v.time}</div>
+<!--                            <div>18:55</div>-->
+                        </div>
+                        <div class="dot"></div>
+                        <div class="text">{$v.context}</div>
+                    </li>
+                   {/volist}
+                </ul>
+                <div class="more bottom5" style="display: none;"><span class="more-text"></span></div> <!---->
+
+            </div>
+
+        </section>
+
+    </div>
+</div>
+
+
+</body>
+
+</html>

@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{include file="public:header"}
+
+<body class="bg_normal">
+
+		<div class="back_box">
+				
+				<ul class="bread">
+						<li>
+						 <a href="{:url('Index/index')}">首页</a>&nbsp;&gt;
+						</li>
+						<li>
+						 <a href="{:url('User/my_setting')}">通用设置</a>&nbsp;&gt;
+						</li>
+						<li>
+						<a href="javascript:;">手机号换绑</a>
+						</li>
+					   </ul>		
+			</div>
+
+	<!-- 公共顶部 -->
+{include file="public:top"}
+
+	<form action="#">
+		<div class="bd_btm_10"></div>
+
+		<div class="bd_btm_10">
+
+				<div class="p_12 bd_btm flex_between bg_white">
+						<span class="mar_rt_12">原手机号</span>
+						<input type="number"  class="flex_1 am-text-right" value="{$user.phone}" name="old_phone" readonly >
+					</div>
+
+			<div class="p_12 bd_btm flex_between bg_white">
+				<span class="mar_rt_12">新手机号</span>
+				<input type="number"  class="flex_1 am-text-right" placeholder="请输入新手机号" name="phone" required >
+			</div>
+			<div class="p_12 bd_btm flex_between bg_white">
+				<input class="travel_msg am-btn am-btn-danger mar_rt_12 bd_radius " value="发送验证码" readonly id="code" />
+				<input type="number" class="flex_1 am-text-right" placeholder="输入手机验证码" name="code" required>
+			</div>
+		</div>
+
+		<div class="confirm_wrap p_12">
+			<button class="confirm_btn" id="btn" type="button">确认</button>
+		</div>
+	</form>
+
+
+	<script>
+			//发送验证码倒计时
+			var countdown = 60;
+	
+			$("#code").click(function(){
+				var phone = $('input[name=phone]').val();
+	
+				var phone_reg = /^[1][3,4,5,6,7,8,9][0-9]{9}$/;
+				
+				if (!phone_reg.test(phone)) {
+					layer.msg("请输入正确的手机号码");
+					return false;
+				}
+
+				var old_phone = $('input[name=old_phone]').val();
+
+				if(old_phone == phone){
+					layer.msg("换绑的手机号码不能与原手机号码相同");
+					return false;
+				}
+				
+				$.ajax({
+					type:"post",
+					url:"{:url('User/send_code')}",
+					data:{phone:phone},
+					dataType:"text",
+					success:function(re){
+						if(re == 1){
+						   
+							settime();
+							
+						}else{
+							layer.msg("此手机号码已注册,无法绑定");return false;
+						}
+					}
+	
+				})
+	
+			})
+	
+			function settime(obj) {
+	
+				var obj = $("#code");
+			  
+				if (countdown == 0) {
+					obj.attr("disabled");
+					obj.val("获取验证码");
+					countdown = 60;
+					return;
+				} else {
+					obj.attr("disabled", true);
+					obj.val("重新发送(" + countdown + ")");
+					countdown--;
+				}
+						 
+				
+				setTimeout(function () {
+								settime(obj)
+							}, 1000)
+				
+			}
+
+			$("#btn").click(function(){
+
+				var code = $('input[name=code]').val();
+
+				if(code.length != 6){
+					layer.msg("请输入正确的手机验证码");return false;
+				}
+
+				var phone = $('input[name=phone]').val();
+	
+				var phone_reg = /^[1][3,4,5,6,7,8,9][0-9]{9}$/;
+				
+				if (!phone_reg.test(phone)) {
+					layer.msg("请输入正确的手机号码");
+					return false;
+				}
+
+				var old_phone = $('input[name=old_phone]').val();
+
+				if(old_phone == phone){
+					layer.msg("换绑的手机号码不能与原手机号码相同");
+					return false;
+				}
+
+				
+
+				$.ajax({
+					type:"post",
+					url:"{:url('User/phone_save')}",
+					data:{phone:phone,code:code},
+					dataType:"text",
+					success:function(re){
+                        if(re == 0){
+						layer.msg("换绑成功");
+						setTimeout("location.href=\"{:url('User/index')}\" ",2000);
+	
+						}
+						if(re == 1){
+							layer.msg("验证码错误");
+							setTimeout("location.reload()",2000);
+							
+						}
+						if(re == 2){
+							layer.msg("验证码已失效");
+							setTimeout("location.reload()",2000);
+							
+						}
+						if(re == 3){
+							layer.msg("系统繁忙,请稍后再试");
+							setTimeout("location.reload()",2000);
+							
+						}
+						if(re == 4){
+							layer.msg("此手机号码已注册,无法绑定");
+							setTimeout("location.reload()",2000);
+							
+						}
+					}
+				})
+
+
+			})
+	
+		
+		</script>
+
+</body>
+
+</html>

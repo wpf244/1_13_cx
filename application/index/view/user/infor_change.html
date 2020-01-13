@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{include file="public:header"}
+
+<body class="bg_normal">
+
+		<div class="back_box">
+				
+				<ul class="bread">
+						<li>
+						 <a href="{:url('Index/index')}">首页</a>&nbsp;&gt;
+						</li>
+						<li>
+						 <a href="{:url('User/my_setting')}">通用设置</a>&nbsp;&gt;
+						</li>
+						<li>
+						<a href="javascript:;">个人信息</a>
+						</li>
+					   </ul>			
+			</div>
+
+	<!-- 公共顶部 -->
+{include file="public:top"}
+
+	<form id="logoForm" action="{:url('User/save_info')}" method="POST" >
+		<div class="bd_btm_10"></div>
+
+		<div class="bd_btm_10">
+			<div class="p_12 bd_btm flex_between bg_white">
+				<span>用户昵称</span>
+				<input type="text" class="flex_1 am-text-right" name="nickname" placeholder="输入用户昵称" value="{$user.nickname}">
+			</div>
+			<div class="p_12 bd_btm flex_between bg_white">
+				<span>用户头像</span>
+				<label for="thumb">
+					{if condition="$user.image eq '' "}
+					 <img id="imgs" src="__HOME__/img/thumb.png" class="bd_radius_50" width="50" height="50" alt="原用户头像">
+
+					 {else /}
+					 <img id="imgs" src="{$user.image}" class="bd_radius_50" width="50" height="50" alt="原用户头像">
+					{/if}
+					
+					<input type="file" class="am-hide" name="image" id="thumb">
+				</label>
+
+			</div>
+		</div>
+
+		<div class="confirm_wrap p_12">
+			<button class="confirm_btn"  type="submit">确认修改</button>
+		</div>
+	</form>
+
+	<script>
+		$(function () {
+			$('#logoForm').ajaxForm({
+				beforeSubmit: checkForm, // 此方法主要是提交前执行的方法，根据需要设置
+				success: complete, // 这是提交后的方法
+				dataType: 'json'
+			});
+
+			function checkForm() {
+				
+			}
+
+			function complete(data) {
+				if (data.code == 1) {
+					layer.alert(data.msg, {
+						icon: 6
+					}, function (index) {
+						layer.close(index);
+						window.location.href = data.url;
+					});
+
+				} else {
+					layer.alert(data.msg, {
+						icon: 5
+					}, function (index) {
+						layer.close(index);
+						window.location.href = data.url;
+					});
+
+				}
+			}
+
+		});
+	</script>
+
+	<script type="text/javascript">
+		$("#thumb").change(function () {
+			var objUrl = getObjectURL(this.files[0]);
+			console.log(objUrl)
+			if (objUrl) {
+				$("#imgs").attr("src", objUrl)
+			}
+		});
+		//建立一個可存取到該file的url
+		function getObjectURL(file) {
+			var url = null;
+			if (window.createObjectURL != undefined) { // basic
+				url = window.createObjectURL(file);
+			} else if (window.URL != undefined) {
+				// mozilla(firefox)
+				url = window.URL.createObjectURL(file);
+			} else if (window.webkitURL != undefined) {
+				// webkit or chrome
+				url = window.webkitURL.createObjectURL(file);
+			}
+			return url;
+		}
+	</script>
+
+</body>
+
+</html>

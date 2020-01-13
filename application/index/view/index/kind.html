@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en" style="width: 100%;height:100%;overflow-x: hidden;overflow-y: auto;">
+
+{include file="public:header"}
+
+<body class="pad_btm" style="width: 100%;height:100%;overflow-x: hidden;overflow-y: auto;">
+
+	<div class="webkit_box">
+
+		<!-- 返回 -->
+		<div class="back_box">
+			
+			<ul class="bread">
+					<li>
+					 <a href="{:url('Index/index')}">首页</a>&nbsp;&gt;
+					</li>
+					<li>
+					 <a href="javascript:;">商品分类</a>
+					</li>
+					
+				   </ul>
+		</div>
+
+		<div class="p_12 bg_white bd_btm">
+			<a href="{:url('Index/search')}" class="search_unit flex_normal">
+				<img src="__HOME__/img/icon_search.png" class="mar_rt_12" width="18" height="18" alt="">
+				<input type="text" class="flex_1" placeholder="请输入搜索关键词" readonly>
+			</a>
+		</div>
+
+		<div class="webkit_content">
+
+			<div class="am-cf">
+				<ul class="classify_menu">
+				  {volist name="list" id="v" key="k"}
+					{if condition="$id eq 0"}
+					{if condition="$k eq 1"}	
+					<li class="classify_item tab_item active">
+						{else /}
+						<li class="classify_item tab_item">
+                     {/if}
+						{elseif condition="$id eq $v.type_id" /}
+
+						<li class="classify_item tab_item active">
+
+						{else /}
+
+                       <li class="classify_item tab_item">
+					{/if}
+						{$v.type_name}</li>
+				  {/volist}
+					<!-- <li class="classify_item tab_item">乡村特产</li>
+					<li class="classify_item tab_item">乡村特产</li> -->
+				</ul>
+
+				<div class="classify_wrap tab_wrap">
+						{volist name="list" id="v" key="k"}	
+						{if condition="$id eq 0"}
+					{if condition="$k eq 1"}	
+						<div class="classify_cont tab_cont active">
+						{else /}
+							<div class="classify_cont tab_cont">
+                     {/if}
+						{elseif condition="$id eq $v.type_id" /}
+
+							<div class="classify_cont tab_cont active">
+
+						{else /}
+
+                       	<div class="classify_cont tab_cont">
+					{/if}
+				
+						<div class="group_banner bd_radius bg_cover mar_btm_12" style="background-image: url({$v.type_banner});"></div>
+						<div class="p_12 shadow_mall bg_white bd_radius mar_btm_12">
+<!--							<h6 class="mar_btm_12">推荐商品</h6>-->
+							<div class="am-g">
+							
+							{volist name="$v['goods']" id="g"}
+								<div class="am-u-sm-4">
+									<a href="{:url('Index/detail',array('id'=>$g['id']))}" class="am-block mar_btm_6">
+	<div class="goods_pic mar_btm_6" style="background-image:url({$g.image})"></div>
+	<div class=" am-text-center am-text-truncate col_nine">{$g.name} &nbsp;{$g.code} ({$g.type})</div>
+</a>
+								</div>
+
+								{/volist}
+							
+							</div>
+						</div>
+					
+					</div>
+					{/volist}
+					<!-- <div class="classify_cont tab_cont">
+						<div class="group_banner bd_radius bg_cover mar_btm_12" style="background-image: url(__HOME__/img/banner.png);"></div>
+						<div class="p_12 shadow_mall bg_white bd_radius mar_btm_12">
+							<h6 class="mar_btm_12">推荐品牌</h6>
+							<div class="am-g">
+								<div class="am-u-sm-4">
+									<a href="goods_detail.html" class="am-block mar_btm_6">
+	<div class="goods_pic mar_btm_6" style="background-image:url(__HOME__/img/goods_pic.png)"></div>
+	<div class=" am-text-center am-text-truncate col_nine">商品选择</div>
+</a>
+								</div>
+								<div class="am-u-sm-4">
+									<a href="goods_detail.html" class="am-block mar_btm_6">
+	<div class="goods_pic mar_btm_6" style="background-image:url(__HOME__/img/goods_pic.png)"></div>
+	<div class=" am-text-center am-text-truncate col_nine">商品选择</div>
+</a>
+								</div>
+								<div class="am-u-sm-4">
+									<a href="goods_detail.html" class="am-block mar_btm_6">
+	<div class="goods_pic mar_btm_6" style="background-image:url(__HOME__/img/goods_pic.png)"></div>
+	<div class=" am-text-center am-text-truncate col_nine">商品选择</div>
+</a>
+								</div>
+								<div class="am-u-sm-4">
+									<a href="goods_detail.html" class="am-block mar_btm_6">
+	<div class="goods_pic mar_btm_6" style="background-image:url(__HOME__/img/goods_pic.png)"></div>
+	<div class=" am-text-center am-text-truncate col_nine">商品选择</div>
+</a>
+								</div>
+								<div class="am-u-sm-4">
+									<a href="goods_detail.html" class="am-block mar_btm_6">
+	<div class="goods_pic mar_btm_6" style="background-image:url(__HOME__/img/goods_pic.png)"></div>
+	<div class=" am-text-center am-text-truncate col_nine">商品选择</div>
+</a>
+								</div>
+								<div class="am-u-sm-4">
+									<a href="goods_detail.html" class="am-block mar_btm_6">
+	<div class="goods_pic mar_btm_6" style="background-image:url(__HOME__/img/goods_pic.png)"></div>
+	<div class=" am-text-center am-text-truncate col_nine">商品选择</div>
+</a>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="classify_cont tab_cont">
+						<div class="group_banner bd_radius bg_cover mar_btm_12" style="background-image: url(__HOME__/img/banner.png);"></div>
+						<div class="p_12 shadow_mall bg_white bd_radius mar_btm_12">
+							<h6 class="mar_btm_12">推荐品牌</h6>
+							<div class="am-g">
+								<div class="am-u-sm-4">
+									<a href="goods_detail.html" class="am-block mar_btm_6">
+	<div class="goods_pic mar_btm_6" style="background-image:url(__HOME__/img/goods_pic.png)"></div>
+	<div class=" am-text-center am-text-truncate col_nine">商品选择</div>
+</a>
+								</div>
+								<div class="am-u-sm-4">
+									<a href="goods_detail.html" class="am-block mar_btm_6">
+	<div class="goods_pic mar_btm_6" style="background-image:url(__HOME__/img/goods_pic.png)"></div>
+	<div class=" am-text-center am-text-truncate col_nine">商品选择</div>
+</a>
+								</div>
+							</div>
+						</div>
+					</div> -->
+				</div>
+			</div>
+
+		</div>
+
+	</div>
+
+
+
+
+
+{include file="public:footers"}
+
+</body>
+
+</html>

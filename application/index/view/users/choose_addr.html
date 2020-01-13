@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{include file="public:header"}
+
+<body class="" style="padding-bottom: 76px;">
+
+	<!-- 返回 -->
+	<div class="back_box">
+		
+		<ul class="bread">
+				<li>
+				 <a href="{:url('Index/index')}">首页</a>&nbsp;&gt;
+				</li>
+				<li>
+				 <a href="{:url('Users/indexs')}">个人中心</a>&nbsp;&gt;
+				</li>
+				<li>
+				<a href="javascript:;">收货地址管理</a>
+				</li>
+			   </ul>
+	</div>
+
+	<!-- 没有地址时显示 -->
+	{empty name="$res"}
+	<div class="user_none" style="display: none;">
+		<img src="__HOME__/img/none_data.png" class="am-center" width="180" height="150" alt="">
+		<div class="am-text-center mar_btm_12 mar_top_12 ">您还没有常用地址~</div>
+	</div>
+	<!-- 没有地址时显示 -->
+{else /}
+	<!-- 有地址时显示 -->
+	<ul class="adr_list">
+	{volist name="res" id="v"}
+		<li class="adr_item bd_btm_10 bg_white" onclick="return change_status({$v.aid});">
+			<div class="bd_btm p_12">
+				<div class="flex_between mar_btm_6">
+					<span>收货人：{$v.username}</span><span>联系电话：{$v.phone}</span>
+				</div>
+				<div>地址：{$v.addr}{$v.addrs}</div>
+			</div>
+			<!-- <div class="flex_between p_12">
+				<a href="javascript:;" {if condition="$v.a_status eq 1"} class="adr_set active" {else /} class="adr_set" {/if} >默认地址</a>
+				<div class="flex_normal">
+					<a href="address_add.html" class="flex_normal mar_rt_12">
+						<span class="mar_rt_6 ">编辑</span><img src="__HOME__/img/icon_setting.png" width="14" height="14" alt="">
+					</a>
+					<a href="javascript:;" class="adr_dele flex_normal">
+						<span class="mar_rt_6  col_nine">删除</span><img src="__HOME__/img/icon_delete.png" width="14" height="14" alt="">
+					</a>
+				</div>
+			</div> -->
+		</li>
+	{/volist}
+	</ul>
+
+	{/empty}
+	<!-- 有地址时显示 -->
+
+	<!-- <div class="confirm_wrap p_12">
+		<a href="{:url('Users/add_addr')}" class="confirm_btn">新建地址</a>
+	</div> -->
+
+	<script>
+			function change_status(id){
+				$.ajax({
+					type:"post",
+					url:"{:url('Users/change_status')}",
+					data:{id:id},
+					datatype:"text",
+					success:function(re){
+						if(re == 1){
+							window.location.href = document.referrer;
+						}else{
+							window.location.href = document.referrer;
+						}
+					}
+				})
+			}
+	</script>
+
+</body>
+
+</html>

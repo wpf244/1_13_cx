@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html>
+{include file="public:header"}
+
+<body class="no-skin">
+<!--头部-->
+{include file="public:nav"}
+
+<div class="main-container ace-save-state" id="main-container">
+  <!--菜单-->
+  <script type="text/javascript">
+  try{ace.settings.loadState('main-container')}catch(e){}
+</script>
+
+{include file="public:left"}
+
+  <div class="main-content">
+    <div class="main-content-inner">
+      <div class="breadcrumbs ace-save-state" id="breadcrumbs">
+        <ul class="breadcrumb">
+          <li>
+            <i class="ace-icon fa fa-home home-icon"></i>
+            <a href="{:url('Index/index')}">首页</a>
+          </li>
+          <li class="active">代理商列表</li>
+        </ul><!-- /.breadcrumb -->
+
+      </div>
+
+      <div class="page-content">
+        {include file="public:set"}
+        <div class="row">
+          <div class="col-xs-12">
+            <div class="col-sm-10 col-sm-offset-1">
+              <div class="page-header">
+                <div class="row">
+                  <div class="col-sm-4">
+                    <a class="btn btn-success btn-white btn-bold" href="{:url('Member/add')}">
+                      <i class="ace-icon fa fa-plus icon-only"></i>
+                      添加</a>
+
+                  </div>
+
+                    <div class="col-sm-8 clearfix">
+                        <form class="form-inline pull-right" action="">
+
+                            <div class="form-group">
+                                <div class="input-group">
+									<span class="input-group-addon">
+										<i class="ace-icon fa fa-check"></i>
+									</span>
+                                    <input type="text" name="title"  class="form-control search-query" value="{$title}" placeholder="请输入需查询的关键字">
+                                    <span class="input-group-btn">
+										<button type="submit" class="btn btn-info btn-sm ajax-search-form">
+											<span class="ace-icon fa fa-search icon-on-right bigger-120"></span> 搜索
+									</button>
+									</span>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+              </div>
+              <table class="table table-bordered table-hover">
+                <thead>
+                <tr>
+                  <th>编号ID</th>
+                  <th class="hidden-480">手机号码</th>        
+                  <th class="hidden-480">代理商姓名</th>
+                  <th class="hidden-480">所属区域</th>
+                  <th class="hidden-480">账户余额</th>
+                  <th class="hidden-480">充值金额</th>
+                  <th class="hidden-480">消费金额</th>
+                  <th class="hidden-480">注册时间</th>
+                  <th class="hidden-480">充值记录</th>
+                  <th style="border-right:#ddd solid 1px;">操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                {volist name="list" id="v"}
+                <tr class="ace-thumbnails">
+              
+                  <td><span class="badge badge-grey">{$v.uid}</span></td>
+                  <td>{$v.phone}</td> 
+                  <td>{$v.nickname}</td>
+                  <td>{$v.addr}</td>
+                  <td>{$v.money}</td>
+                  <td>{$v.recharge_money}</td>
+                  <td>{$v.consume_money}</td>
+
+                  <td class="hidden-480">{$v.time|date="Y-m-d H:i:s",###}</td>
+                    <td><a class="btn btn-xs btn-info" href="{:url('Member/money_log',array('uid'=>$v.uid))}" title="点击查看">
+                        查看
+                    </a></td>
+                  <td>
+
+
+                   {if condition="$v.status eq 1"}
+                    <button class="btn btn-xs btn-success" type="button" onclick="change({$v.uid},1)" title="点击禁用">
+                      禁用
+                    </button>
+                    {else /}
+                    <button class="btn btn-xs btn-danger" type="button" onclick="change({$v.uid},2)" title="点击启用">
+                      启用
+                    </button>
+                    {/if}
+
+                    <a class="btn btn-xs btn-info" href="{:url('Member/modifys',array('uid'=>$v.uid))}" title="点击编辑">
+                      编辑
+                    </a>
+                    <button class="btn btn-xs btn-danger" type="button" onclick="dels({$v.uid})" title="点击删除">
+                      删除
+                    </button>
+
+                      <button class="btn btn-xs btn-success chong" type="button"  data-id="{$v.uid}" data-toggle="modal" data-target="#add"  title="点击充值">
+                          充值
+                      </button>
+
+                  </td>
+                </tr>
+                {/volist}
+                {empty name="list"}<tr><td colspan="11" class="text-center">暂无数据</td></tr>{/empty}
+                </tbody>
+
+              </table>
+              <div class="text-center">
+                <ul class="pagination" id="result">
+                  {$page}
+                </ul>
+              </div>
+            </div>
+          </div><!-- /.col -->
+        </div><!-- /.row -->
+      </div><!-- /.page-content -->
+    </div>
+  </div><!-- /.main-content -->
+
+    <!-- Modal -->
+    <div class="modal fade" id="add" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">账户充值</h4>
+                </div>
+                <form id="logoForm" class="form-horizontal" action="{:url('Member/change_money')}" method="post" enctype="multipart/form-data">
+                <div class="modal-body">
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label no-padding-right" for="">充值类型</label>
+                            <div class="col-sm-8" style="top: 8px;">
+                                <input  type="radio" name="type" value="1" checked required>增加
+
+                                <input  type="radio" name="type" value="2" style="margin-left: 6px;" required>减少
+                            </div>
+                            <div class="col-sm-8">
+
+                            </div>
+
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label no-padding-right" for="">充值金额</label>
+                            <div class="col-sm-8">
+                                <input  class="form-control" type="number" min="1" name="money" placeholder="请输入充值金额">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label no-padding-right" for="">充值说明</label>
+                            <div class="col-sm-8">
+
+                                <textarea  name="content" class="desc" style="width:100%;"></textarea>
+
+
+                            </div>
+                        </div>
+
+                        <input type="hidden" name="uid" id="uid" />
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button  type="submit" id="btn" class="btn btn-primary">保存</button>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+{include file="public:footer"}
+
+<a href="#" id="btn-scroll-up" class="btn-scroll-up btn btn-sm btn-inverse">
+  <i class="ace-icon fa fa-angle-double-up icon-only bigger-110"></i>
+</a>
+</div><!-- /.main-container -->
+
+
+<script>
+
+    $(".chong").click(function(){
+        var uid = $(this).data("id");
+        $("#uid").val(uid);
+    })
+
+
+
+
+</script>
+
+<script>
+  jQuery(function($) {
+    $('[data-rel=tooltip]').tooltip();
+
+    $( "#hide-option" ).tooltip({
+      hide: {
+        effect: "explode",
+        delay: 250
+      }
+    });
+
+  })
+</script>
+
+<script>
+    $(function () {
+        $('#logoForm').ajaxForm({
+            beforeSubmit: checkForm, // 此方法主要是提交前执行的方法，根据需要设置
+            success: complete, // 这是提交后的方法
+            dataType: 'json'
+        });
+
+        function checkForm() {
+
+            var money = $("input[name=money]").val();
+
+            if(money < 1 || money == ''){
+                layer.msg("请输入正确的充值金额");return false;
+            }
+            $("#btn").attr("type","button");
+        }
+
+        function complete(data) {
+            if (data.code == 1) {
+                layer.alert(data.msg, {
+                    icon: 6
+                }, function (index) {
+                    layer.close(index);
+                    window.location.href = data.url;
+                });
+
+            } else {
+                layer.alert(data.msg, {
+                    icon: 5
+                }, function (index) {
+                    layer.close(index);
+                    return false;
+                });
+
+            }
+        }
+
+    });
+</script>
+<script type="text/javascript">
+		function dels(id){
+			layer.confirm('你确定删除此会员吗？', {icon: 3}, function(index){
+		    layer.close(index);
+		    $.ajax({
+            type:"post",
+            url:"{:url('Member/delete')}",
+              data:{id:id},
+              datatype:"text",
+              success:function(re){
+                if(re == 2 || re==1){
+                    layer.msg("系统繁忙请稍后再试");
+                    setTimeout('location.reload()',2000);
+                }
+                
+                if(re == 0){
+                  layer.msg("删除成功")
+                  setTimeout('location.reload()',2000);
+                }
+              }
+          })
+		  });
+	    }
+
+      function level_change(type, uid){
+      $.ajax({
+        url: "{:url('Member/level_change')}",
+        type: "post",
+        data: {type: type, uid: uid},
+        success: function(data){
+          if(data.status == 1){
+            $("#level"+uid).html(data.data['level_name']);
+          }else{
+            layer.msg(data.msg);
+          }
+        }
+      })
+    }
+
+    function change_money(id) {
+      layer.prompt({
+        title: '请输入调整后的佣金',
+        formType: 3
+      }, function (text, index) {
+        var n = /^[1-9]\d*$/;
+        if (!n.test(text)) {
+          layer.alert('请输入正确数值的佣金');
+          return false;
+        } else {
+          $.ajax({
+            type: "post",
+            url: "__URL__/change_money",
+            data: {
+              id: id,
+              money: text
+            },
+            datatype: "text",
+            success: function (re) {
+              if (re == 1) {
+                layer.close(index);
+                layer.msg("调整成功");
+               location.reload();
+              } else {
+                layer.close(index);
+                layer.msg("系统繁忙，请稍后再试");
+               location.reload();
+              }
+
+            }
+          })
+        }
+      })
+    }
+
+   
+		</script>
+<script>
+function change(id,status){
+ if(status == 1){
+	layer.confirm('你确定禁用此用户吗？', {icon: 3}, function(index){
+		    layer.close(index);
+		    $.ajax({
+            type:"post",
+            url:"{:url('Member/changes')}",
+              data:{id:id},
+              datatype:"text",
+              success:function(re){
+                if(re == 2 || re==0){
+                    layer.msg("系统繁忙请稍后再试");
+                    setTimeout('location.reload()',2000);
+                }
+                
+                if(re == 1){
+                  layer.msg("禁用成功")
+                    setTimeout('location.reload()',2000);
+                }
+              }
+          })
+		  });
+ }else{
+  layer.confirm('你确定启用此用户吗？', {icon: 3}, function(index){
+		    layer.close(index);
+		    $.ajax({
+            type:"post",
+            url:"{:url('Member/changes')}",
+              data:{id:id},
+              datatype:"text",
+              success:function(re){
+                if(re == 2 || re==0){
+                    layer.msg("系统繁忙请稍后再试");
+                    setTimeout('location.reload()',2000);
+                }
+                
+                if(re == 1){
+                  layer.msg("启用成功")
+                    setTimeout('location.reload()',2000);
+                }
+              }
+          })
+		  });
+ } 
+
+}
+
+</script>
+
+
+  <script>
+  $("#change").click(function(){
+  	$("#sortForm").submit();
+  })
+
+  </script>
+</body>
+</html>

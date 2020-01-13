@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{include file="public:header"}
+
+<body class="">
+
+	<!-- 返回 -->
+	<div class="back_box">
+		
+		<ul class="bread">
+				<li>
+				 <a href="{:url('Index/index')}">首页</a>&nbsp;&gt;
+				</li>
+				<li>
+				 <a href="javascript:;">商品搜索</a>
+				</li>
+				
+			   </ul>
+	</div>
+	
+	<div class="p_12 flex_normal bd_btm">
+		<div class="search_unit flex_normal flex_1">
+			<img src="__HOME__/img/icon_search.png" class="mar_rt_12" width="18" height="18" alt="">
+			<input type="text" id="keywords" class="flex_1" placeholder="请输入搜索关键词">
+		</div>
+		<a href="javascript:;" id="sou" class="mar_lt_12 col_main">搜索</a>
+	</div>
+
+	<script>
+	  $("#sou").click(function(){
+		  var keywords=$("#keywords").val();
+
+		  if($.trim(keywords) == ''){
+			  layer.msg("请输入搜素关键词");return false;
+		  }
+		  location.href="{:url('Index/search_lister')}?keywords="+keywords;
+	  })
+	</script>
+
+<!--	<div class="p_12">-->
+<!--		<h5 class="mar_btm_12">搜索发现</h5>-->
+<!--		<div class="flex_normal flex_wrap">-->
+<!--		  {volist name="res" id="v"}	-->
+<!--			<a href="{:url('Goods/search_lister',array('keywords'=>$v['name']))}" class="am-block bd_radius_100 bg_normal pad_6_12 mar_rt_12 mar_btm_12 ">{$v.name}</a>-->
+<!--			{/volist}-->
+<!--		</div>-->
+<!--	</div>-->
+
+	<div class="p_12">
+		<div class="flex_between mar_btm_12">
+			<h5>搜索历史</h5>
+			<a href="javascript:;" class="history_dele am-block"><img src="__HOME__/img/icon_delete.png" width="18" height="18" alt=""></a>
+		</div>
+		<div class="history_list flex_normal flex_wrap">
+		 {notempty name="$history"}	
+		  {volist name="history" id="vh"} 
+			<a href="{:url('Index/search_lister',array('keywords'=>$vh))}" class="history_item am-block bd_radius_100 bg_normal pad_6_12 mar_rt_12 mar_btm_12 ">{$vh}</a>
+			{/volist}
+			{else /}
+			
+		 {/notempty}
+		</div>
+		<div class="no_data">历史记录为空~</div>
+	</div>
+	
+	<script>
+		$(function(){
+			// 清空历史记录
+			$('.history_dele').click(function(){
+				let len = $('.history_item').length
+				if(len === 0) {
+					layer.msg('当前没有历史记录~')
+					return
+				}
+				$('.history_list').empty()
+				// $('.history_list').replaceWith('<div class="no_data">历史记录为空~</div>');
+
+				$.ajax({
+					type:"post",
+					url:"{:url('Index/clear')}",
+					dataType:"text",
+					success:function()
+					{
+
+					}
+				})
+			})
+		})
+	</script>
+
+</body>
+
+</html>

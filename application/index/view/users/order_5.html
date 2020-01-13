@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{include file="public:header"}
+
+<body class="">
+
+	<!-- 返回 -->
+	<div class="back_box">
+			<ul class="bread">
+					<li>
+					 <a href="{:url('Index/index')}">首页</a>&nbsp;&gt;
+					</li>
+					<li>
+					 <a href="{:url('Users/indexs')}">个人中心</a>&nbsp;&gt;
+					</li>
+					<li>
+					<a href="javascript:;">退款/售后订单</a>
+					</li>
+				   </ul>
+	</div>
+
+	<div class="order_menu">
+			<a href="order_1.html" class="order_single">待付款</a>
+			<a href="order_2.html" class="order_single">待发货</a>
+			<a href="order_3.html" class="order_single">待收货</a>
+			<a href="order_4.html" class="order_single">待评价</a>
+			<a href="order_6.html" class="order_single">已完成</a>
+			<a href="javascript:;" class="order_single active">退款/售后</a>
+	</div>
+
+	<ul class="order_list">
+	 {volist name="res" id="v"}	
+		<li class="order_danyuan bd_btm_10">
+			<div class="flex_between p_12">
+				<h6>订单号：{$v.code}</h6><span class="col_main ">{if condition="$v.state eq 0" }等待商家回应{/if}
+						{if condition="$v.state eq 1" }已完成退款{/if}
+						{if condition="$v.state eq 2" }已驳回{/if}
+				</span>
+			</div>
+			{volist name="$v['list']" id="p"}
+			<div class="order_goods">
+	<img class="mar_rt_12" src="{$p.simage}" width="90" height="90" alt="">
+	<div class="flex_1">
+		<div class="order_wrap">
+			<div class="flex_1">
+				<div class="flex_between">
+					<h5 class="am-text-truncate">{$p.gname}</h5>
+					<span class="mar_lt_12">￥{$p.price}</span>
+				</div>
+				<div class="order_desc  col_nine">
+					<h6>{$p.sname}</h6>
+				
+				</div>
+			</div>
+			<div class="am-text-right col_nine ">X{$p.num}</div>
+		</div>
+	</div>
+</div>
+		{/volist}
+			<div class="p_12 bd_btm am-text-right">
+				合计：<span class="col_main am-text-lg">￥{$v.zprice}</span>
+			</div>
+			<div class="p_12 am-text-right">
+					{if condition="$v.state eq 0" }
+				<a onclick="dels({$v.did})" class="order_cancle am-btn am-btn-xs am-round am-btn-default">取消退款</a>
+			  {/if}
+			</div>
+		</li>
+	  {/volist}
+	</ul>
+
+	<div class="no_data">暂无更多订单~</div>
+
+	<script>
+			function dels(id){
+				layer.confirm('你确定取消吗？', {icon: 3}, function(index){
+					layer.close(index);
+					$.ajax({
+						type:"post",
+						url:"{:url('Users/cancel')}",
+						data:{id:id},
+						datatype:"text",
+						success:function(re){
+							if(re == 0){
+								location.reload();
+							}else{
+								layer.msg("系统繁忙请稍后再试");location.reload();
+							}
+						}
+					})
+				});
+			}
+	</script>
+
+</body>
+
+</html>

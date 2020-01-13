@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{include file="public:header"}
+
+<body class="bg_normal">
+
+		<div class="back_box">
+				
+				
+				<ul class="bread">
+						<li>
+						 <a href="{:url('Index/index')}">首页</a>&nbsp;&gt;
+						</li>
+						<li>
+						 <a href="{:url('User/index')}">个人中心</a>&nbsp;&gt;
+						</li>
+						<li>
+						<a href="javascript:;">通用设置</a>
+						</li>
+					   </ul>	
+			</div>
+
+	<!-- 公共顶部 -->
+{include file="public:top"}
+
+	<div class="bd_btm_10"></div>
+
+	<div class="bd_btm_10">
+		<a class="p_12 bd_btm flex_between bg_white" href="javascript:;">
+			<span>手机号</span>
+			<input class="flex_1 am-text-right" type="text" value="{$user.phone}" readonly/>
+		</a>
+		<a class="p_12 bd_btm flex_between bg_white" href="{:url('User/pwd_change')}">
+			<span>密码更改</span>
+			<img src="__HOME__/img/icon_right.png" width="6" height="11" alt="">
+		</a>
+		<a class="p_12 bd_btm flex_between bg_white" href="{:url('User/tel_change')}">
+			<span>手机号换绑</span>
+			<img src="__HOME__/img/icon_right.png" width="6" height="11" alt="">
+		</a>
+		<a class="p_12 bd_btm flex_between bg_white" href="{:url('User/infor_change')}">
+			<span>修改个人信息</span>
+			<img src="__HOME__/img/icon_right.png" width="6" height="11" alt="">
+		</a>
+	</div>
+
+	<div class="bd_btm_10">
+		<a class="p_12 bd_btm flex_between bg_white" href="{:url('User/feed_back')}">
+			<span>意见反馈</span>
+			<img src="__HOME__/img/icon_right.png" width="6" height="11" alt="">
+		</a>
+	</div>
+
+	<div class="pd_12">
+			<a href="{:url('Login/out')}" class="confirm_btn" >退出登录</a>
+		</div>
+	
+
+</body>
+
+</html>

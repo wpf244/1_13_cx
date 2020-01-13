@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{include file="public:header"}
+
+<body class="bg_normal">
+		<div class="back_box">
+				
+				<ul class="bread">
+						<li>
+						 <a href="{:url('Index/index')}">首页</a>&nbsp;&gt;
+						</li>
+						<li>
+								<a href="{:url('User/index')}">个人中心</a>&nbsp;&gt;
+							   </li>
+						<li>
+						 <a href="javascript:;">旅拍修改</a>
+						</li>
+						
+					   </ul>		
+			</div>
+	<!-- 公共顶部 -->
+	{include file="public:top"}
+
+	<form id="logoForm" action="{:url('User/save_publish')}" method="POST" enctype="multipart/form-data" >
+
+		<div class="form_btn am-text-right p_12 bg_normal">
+			<button class="am-btn am-btn-danger am-round" type="submit">发布</button>
+		</div>
+		<div class="bd_btm_10">
+			<a href="javascript:;" class="form_group flex_between p_12 bg_white">
+				<div class="flex_normal">
+					<img class="mar_rt_6" src="__HOME__/img/icon_position.png" width="16" height="16" alt=""><span>添加地点</span>
+				</div>
+				<div class="flex_normal">
+					<input id="myAddrs" type="text" readonly value="{$re.addr}"  name="addr" class="flex_1 col_nine  mar_rt_6 am-text-right" placeholder="选择城市" /><img src="__HOME__/img/icon_right.png" width="6" height="11" alt="">
+				</div>
+			</a>
+		</div>
+		<div class="bd_btm_10">
+			<a href="javascript:;" class="form_group flex_between p_12 bg_white">
+				<div class="flex_normal">
+					<img class="mar_rt_6" src="__HOME__/img/icon_time.png" width="16" height="16" alt=""><span>拍摄日期</span>
+				</div>
+				<div class="flex_normal">
+					<input type="text"  name="dates" value="{$re.dates}"  class="flex_1 col_nine  am-text-right" readonly
+						data-am-datepicker="{format: 'yyyy-mm-dd'}" /><img class="mar_lt_6" src="__HOME__/img/icon_right.png"
+						width="6" height="11" alt="">
+				</div>
+			</a>
+		</div>
+		<div class="bd_btm_10">
+			<div class="form_group p_12 bg_white">
+				<h5 class="mar_btm_6">故事标题</h5>
+				<input class="am-block " type="text" name="title" value="{$re.title}"  placeholder="输入标题">
+			</div>
+		</div>
+		<div class="bd_btm_10">
+			<div class="form_group p_12 bg_white">
+				<h5 class="mar_btm_6">旅行故事</h5>
+				<textarea class="form_area am-block " name="content"   style="resize:none;width: 100%;height: 120px;" placeholder="分享你的旅行故事，最多500字">{$re.content}</textarea>
+			</div>
+		</div>
+
+		<!-- 上传图片 -->
+		<div class="custom_img p_12">
+			<div class="custom_img_top mar_btm_12">
+				<h5 class="travel_wei">旅行图片</h5>
+			</div>
+
+			<!--点击上传图片 触发下面的div 点击事件-->
+			<div class="z_container">
+				<!--    照片添加    -->
+				<div class="z_photo">
+					<div class="z_file">
+						<input type="file"  name="image[]"  id="file" value="" accept="image/*" multiple onchange="imgChange('z_photo','z_file');" />
+					</div>		
+				</div>
+		
+				<!--遮罩层-->
+				<div class="z_mask">
+					<!--弹出框-->
+					<div class="z_alert">
+						<p>确定要删除这张图片吗？</p>
+						<p>
+							<span class="z_cancel">取消</span>
+							<span class="z_sure">确定</span>
+						</p>
+					</div>
+				</div>
+			</div>
+			
+		</div>
+      <input name="id" value="{$re.id}" type="hidden"  />
+	</form>
+
+	<script type="text/javascript">
+
+        function imgChange(obj1, obj2) {
+            //获取点击的文本框
+            var file = document.getElementById("file");
+            //存放图片的父级元素
+            var imgContainer = document.getElementsByClassName(obj1)[0];
+            //获取的图片文件
+            var fileList = file.files;
+            //文本框的父级元素
+            var input = document.getElementsByClassName(obj2)[0];
+            var imgArr = [];
+            //遍历获取到得图片文件
+            for (var i = 0; i < fileList.length; i++) {
+                var imgUrl = window.URL.createObjectURL(file.files[i]);
+                imgArr.push(imgUrl);
+                var img = document.createElement("img");
+                img.setAttribute("src", imgArr[i]);
+                var imgAdd = document.createElement("div");
+                imgAdd.setAttribute("class", "z_addImg");
+                imgAdd.appendChild(img);
+                imgContainer.appendChild(imgAdd);
+            };
+            imgRemove();
+        };
+
+        function imgRemove() {
+            var imgList = document.getElementsByClassName("z_addImg");
+            var mask = document.getElementsByClassName("z_mask")[0];
+            var cancel = document.getElementsByClassName("z_cancel")[0];
+            var sure = document.getElementsByClassName("z_sure")[0];
+            for (var j = 0; j < imgList.length; j++) {
+                imgList[j].index = j;
+                imgList[j].onclick = function() {
+                    var t = this;
+                    mask.style.display = "block";
+                    cancel.onclick = function() {
+                        mask.style.display = "none";
+                    };
+                    sure.onclick = function() {
+                        mask.style.display = "none";
+                        t.remove();
+                    };
+
+                }
+            };
+        };
+
+		$('#logoForm').ajaxForm({
+		beforeSubmit: checkForm, // 此方法主要是提交前执行的方法，根据需要设置
+		success: complete, // 这是提交后的方法
+		dataType: 'json'
+	});
+
+	function checkForm() {
+			var addr = $('input[name=addr]').val();
+			
+			if($.trim(addr) == ''){
+				layer.msg("请选择拍摄地点");return false;
+			}
+
+			var title = $('input[name=title]').val();
+			
+			if($.trim(title) == ''){
+				layer.msg("标题不得为空");return false;
+			}
+
+			var content = $('textarea[name=content]').val();
+
+			if($.trim(content).length > 500 || $.trim(content).length == 0){
+				layer.msg("内容不得为空或超过500字");
+				return false;
+			}
+
+			
+	
+			// if(imgNum == 0){
+			// 	layer.msg("请上传图片");
+			// 	return false;
+			// }
+
+		
+
+	}
+
+	function complete(data) {
+		if (data.code == 1) {
+			layer.alert(data.msg, {
+				icon: 6
+			}, function (index) {
+				layer.close(index);
+				window.location.href = data.url;
+			});
+
+		} else {
+			layer.alert(data.msg, {
+				icon: 5
+			}, function (index) {
+				layer.close(index);
+				window.location.href = data.url;
+			});
+
+		}
+	}
+
+    </script>
+	
+	<script type="text/javascript">
+
+		$(function () {
+			/**
+			 * 通过数组id获取地址列表数组
+			 *
+			 * @param {Number} id
+			 * @return {Array} 
+			 */
+			function getAddrsArrayById(id) {
+				var results = [];
+				if (addr_arr[id] != undefined)
+					addr_arr[id].forEach(function (subArr) {
+						results.push({
+							key: subArr[0],
+							val: subArr[1]
+						});
+					});
+				else {
+					return;
+				}
+				return results;
+			}
+			/**
+			 * 通过开始的key获取开始时应该选中开始数组中哪个元素
+			 *
+			 * @param {Array} StartArr
+			 * @param {Number|String} key
+			 * @return {Number} 
+			 */
+			function getStartIndexByKeyFromStartArr(startArr, key) {
+				var result = 0;
+				if (startArr != undefined)
+					startArr.forEach(function (obj, index) {
+						if (obj.key == key) {
+							result = index;
+							return false;
+						}
+					});
+				return result;
+			}
+
+			//bind the click event for 'input' element
+			$("#myAddrs").click(function () {
+				var PROVINCES = [],
+					startCities = [],
+					startDists = [];
+				//Province data，shall never change.
+				addr_arr[0].forEach(function (prov) {
+					PROVINCES.push({
+						key: prov[0],
+						val: prov[1]
+					});
+				});
+				//init other data.
+				var $input = $(this),
+					dataKey = $input.attr("data-key"),
+					provKey = 1, //default province 北京
+					cityKey = 36, //default city 北京
+					distKey = 37, //default district 北京东城区
+					distStartIndex = 0, //default 0
+					cityStartIndex = 0, //default 0
+					provStartIndex = 0; //default 0
+
+				if (dataKey != "" && dataKey != undefined) {
+					var sArr = dataKey.split("-");
+					if (sArr.length == 3) {
+						provKey = sArr[0];
+						cityKey = sArr[1];
+						distKey = sArr[2];
+
+					} else if (sArr.length == 2) { //such as 台湾，香港 and the like.
+						provKey = sArr[0];
+						cityKey = sArr[1];
+					}
+					startCities = getAddrsArrayById(provKey);
+					startDists = getAddrsArrayById(cityKey);
+					provStartIndex = getStartIndexByKeyFromStartArr(PROVINCES, provKey);
+					cityStartIndex = getStartIndexByKeyFromStartArr(startCities, cityKey);
+					distStartIndex = getStartIndexByKeyFromStartArr(startDists, distKey);
+				}
+				var navArr = [{ //3 scrollers, and the title and id will be as follows:
+					title: "省",
+					id: "scs_items_prov"
+				}, {
+					title: "市",
+					id: "scs_items_city"
+				}, {
+					title: "区",
+					id: "scs_items_dist"
+				}];
+				SCS.init({
+					navArr: navArr,
+					onOk: function (selectedKey, selectedValue) {
+						$input.val(selectedValue).attr("data-key", selectedKey);
+					}
+				});
+				var distScroller = new SCS.scrollCascadeSelect({
+					el: "#" + navArr[2].id,
+					dataArr: startDists,
+					startIndex: distStartIndex
+				});
+				var cityScroller = new SCS.scrollCascadeSelect({
+					el: "#" + navArr[1].id,
+					dataArr: startCities,
+					startIndex: cityStartIndex,
+					onChange: function (selectedItem, selectedIndex) {
+						distScroller.render(getAddrsArrayById(selectedItem.key), 0); //re-render distScroller when cityScroller change
+					}
+				});
+				var provScroller = new SCS.scrollCascadeSelect({
+					el: "#" + navArr[0].id,
+					dataArr: PROVINCES,
+					startIndex: provStartIndex,
+					onChange: function (selectedItem,
+						selectedIndex
+					) { //re-render both cityScroller and distScroller when provScroller change
+						cityScroller.render(getAddrsArrayById(selectedItem.key), 0);
+						distScroller.render(getAddrsArrayById(cityScroller.getSelectedItem().key), 0);
+					}
+				});
+			});
+			// 选择城市三级联动止
+
+		});
+	</script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{include file="public:header"}
+<body class="">
+		<div class="back_box">
+				
+				<ul class="bread">
+						<li>
+						 <a href="{:url('Index/index')}">首页</a>&nbsp;&gt;
+						</li>
+						<li>
+						 <a href="{:url('User/index')}">个人中心</a>&nbsp;&gt;
+						</li>
+						<li>
+						<a href="javascript:;">拼团订单</a>
+						</li>
+					   </ul>		
+			</div>
+	<!-- 公共顶部 -->
+{include file="public:top"}
+
+	<ul class="order_hd flex_around bd_btm">
+		
+		<li class="order_item active tab_item">拼团中</li>
+		<li class="order_item tab_item">待发货</li>
+		<li class="order_item tab_item">待收货</li>
+		<li class="order_item tab_item">已完成</li>
+		<li class="order_item tab_item">拼团失败</li>
+	</ul>
+
+	<div class="tab_wrap">
+		<div class="tab_cont p_12 active">
+			<ul>
+				{volist name="rew" id="vw"}
+				<li class="ticket_piao pd_12 bd_btm">
+						<img class="mar_rt_12 mar_top_6" src="__HOME__/img/icon_ticket.png" width="20" height="20" alt="">
+	<div class="flex_1">
+		<a href="javascript:;" class="am-text-truncate am-block mar_btm_6">{$vw.name}</a>
+		<div class=" col_nine mar_btm_6">订单编号：{$vw.code}</div>
+		<div class=" col_nine">商品价格：{$vw.goods_price}</div>
+	</div>
+	<div class="mar_lt_12">￥{$vw.price}</div>
+	
+	                <span class="ticket_status col_main">拼团中</span>
+					</li>
+                 {/volist}
+			</ul>
+			<div class="no_data">没有更多订单~</div>
+		</div>
+		<div class="tab_cont p_12">
+			<ul>
+					{volist name="res" id="vs"}
+					<li class="ticket_piao pd_12 bd_btm">
+							<img class="mar_rt_12 mar_top_6" src="__HOME__/img/icon_ticket.png" width="20" height="20" alt="">
+							<div class="flex_1">
+									<a href="javascript:;" class="am-text-truncate am-block mar_btm_6">{$vs.name}</a>
+									<div class=" col_nine mar_btm_6">订单编号：{$vs.code}</div>
+									<div class=" col_nine">商品价格：{$vs.goods_price}</div>
+								</div>
+								<div class="mar_lt_12">￥{$vs.price}</div>
+		
+							<span class="ticket_status col_main">已支付</span>
+						</li>
+						{/volist}
+			</ul>
+			<div class="no_data">没有更多订单~</div>
+		</div>
+		<div class="tab_cont p_12">
+			<ul>
+					{volist name="ref" id="vf"}
+					<li class="ticket_piao pd_12 bd_btm">
+							<img class="mar_rt_12 mar_top_6" src="__HOME__/img/icon_ticket.png" width="20" height="20" alt="">
+							<div class="flex_1">
+									<a href="javascript:;" class="am-text-truncate am-block mar_btm_6">{$vf.name}</a>
+									<div class=" col_nine mar_btm_6">订单编号：{$vf.code}</div>
+									<div class=" col_nine">商品价格：{$vf.goods_price}</div>
+								</div>
+								<div class="mar_lt_12">￥{$vf.price}</div>
+		
+								<span class="ticket_status col_main"><a class="am-btn am-btn-default am-btn-xs am-round mar_rt_6" onclick="change({$vf.id})">确认收货</a></span>
+						</li>
+						{/volist}
+			</ul>
+			<div class="no_data">没有更多订单~</div>
+		</div>
+		<div class="tab_cont p_12">
+			<ul>
+					{volist name="rec" id="vc"}
+				<li class="ticket_piao pd_12 bd_btm">
+					<img class="mar_rt_12 mar_top_6" src="__HOME__/img/icon_ticket.png" width="20" height="20" alt="">
+					<div class="flex_1">
+							<a href="javascript:;" class="am-text-truncate am-block mar_btm_6">{$vc.name}</a>
+							<div class=" col_nine mar_btm_6">订单编号：{$vc.code}</div>
+							<div class=" col_nine">商品价格：{$vc.goods_price}</div>
+						</div>
+						<div class="mar_lt_12">￥{$vc.price}</div>
+
+						<span class="ticket_status col_main">已完成</span>
+				</li>
+				{/volist}
+			</ul>
+			<div class="no_data">没有更多订单~</div>
+		</div>
+		<div class="tab_cont p_12">
+			<ul>
+					{volist name="rep" id="vp"}
+				<li class="ticket_piao pd_12 bd_btm">
+					<img class="mar_rt_12 mar_top_6" src="__HOME__/img/icon_ticket.png" width="20" height="20" alt="">
+					<div class="flex_1">
+							<a href="javascript:;" class="am-text-truncate am-block mar_btm_6">{$vp.name}</a>
+							<div class=" col_nine mar_btm_6">订单编号：{$vp.code}</div>
+							<div class=" col_nine">商品价格：{$vp.goods_price}</div>
+						</div>
+						<div class="mar_lt_12">￥{$vp.price}</div>
+
+						<span class="ticket_status col_main">拼团失败</span>
+				</li>
+				{/volist}
+			</ul>
+			<div class="no_data">没有更多订单~</div>
+		</div>
+	</div>
+	<script type="text/javascript">
+		
+		function change(id){
+			layer.confirm('你确定已经收到货物了吗？', {icon: 3}, function(index){
+		    layer.close(index);
+        $.ajax({
+          type:"post",
+          url:"__URL__/change_assemble_dd",
+            data:{id:id},
+            datatype:"text",
+            success:function(re){
+               if(re == 0){
+                  layer.msg("操作成功");
+                  setTimeout("location.reload()",1000);
+               }else{
+                   layer.msg("操作失败");
+                  setTimeout("location.reload()",1000);
+               }
+              
+            }
+        })
+		  });
+	    }
+		</script>
+</body>
+
+</html>

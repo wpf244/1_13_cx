@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{include file="public:header"}
+<body class="">
+		<div class="back_box">
+				
+				<ul class="bread">
+						<li>
+						 <a href="{:url('Index/index')}">首页</a>&nbsp;&gt;
+						</li>
+						<li>
+						 <a href="{:url('User/index')}">个人中心</a>&nbsp;&gt;
+						</li>
+						<li>
+						<a href="javascript:;">团游订单</a>
+						</li>
+					   </ul>	
+			</div>
+	<!-- 公共顶部 -->
+{include file="public:top"}
+
+	<ul class="order_hd flex_around bd_btm">
+		
+		<li class="order_item active tab_item">待支付</li>
+		<li class="order_item tab_item">已支付</li>
+		<li class="order_item tab_item">已核销</li>
+	</ul>
+
+	<div class="tab_wrap">
+		<div class="tab_cont p_12 active">
+			<ul>
+				{volist name="re" id="v"}
+				<li class="ticket_piao pd_12 bd_btm">
+						<img class="mar_rt_12 mar_top_6" src="__HOME__/img/icon_ticket.png" width="20" height="20" alt="">
+	<div class="flex_1">
+		<a href="javascript:;" class="am-text-truncate am-block mar_btm_6">{$v.name}</a>
+		<div class=" col_nine mar_btm_6"></div>
+		<div class=" col_nine">数量：{$v.num}</div>
+	</div>
+	<div class="mar_lt_12">￥{$v.price}</div>
+	
+						<span class="ticket_status col_main"><a class="am-btn am-btn-default am-btn-xs am-round mar_rt_6" onclick="dels({$v.id})">取消</a><a class="am-btn am-btn-danger am-btn-xs am-round" href="{:url('Pay/pay')}?did={$v.id}">支付</a></span>
+					</li>
+                 {/volist}
+			</ul>
+			<div class="no_data">没有更多订单~</div>
+		</div>
+		<div class="tab_cont p_12">
+			<ul>
+					{volist name="res" id="vs"}
+					<li class="ticket_piao pd_12 bd_btm">
+							<img class="mar_rt_12 mar_top_6" src="__HOME__/img/icon_ticket.png" width="20" height="20" alt="">
+							<div class="flex_1">
+									<a href="javascript:;" class="am-text-truncate am-block mar_btm_6">{$vs.name}</a>
+									<div class=" col_nine mar_btm_6"></div>
+									<div class=" col_nine">数量：{$vs.num}</div>
+									<div class=" col_nine mar_btm_6">核销码：{$vs.time}</div>
+								</div>
+								<div class="mar_lt_12">￥{$vs.price}</div>
+		
+							<span class="ticket_status col_main">已支付</span>
+						</li>
+						{/volist}
+			</ul>
+			<div class="no_data">没有更多订单~</div>
+		</div>
+		<div class="tab_cont p_12">
+			<ul>
+					{volist name="reh" id="vh"}
+				<li class="ticket_piao pd_12 bd_btm">
+					<img class="mar_rt_12 mar_top_6" src="__HOME__/img/icon_ticket.png" width="20" height="20" alt="">
+					<div class="flex_1">
+							<a href="javascript:;" class="am-text-truncate am-block mar_btm_6">{$vh.name}</a>
+							<div class=" col_nine mar_btm_6"></div>
+							<div class=" col_nine">数量：{$vh.num}</div>
+						</div>
+						<div class="mar_lt_12">￥{$vh.price}</div>
+
+						<span class="ticket_status col_main">已核销</span>
+				</li>
+				{/volist}
+			</ul>
+			<div class="no_data">没有更多订单~</div>
+		</div>
+	</div>
+	<script type="text/javascript">
+		function dels(id){
+			layer.confirm('你确定取消此订单吗？', {icon: 3}, function(index){
+		    layer.close(index);
+        $.ajax({
+          type:"post",
+          url:"__URL__/delete_dd",
+            data:{id:id},
+            datatype:"text",
+            success:function(re){
+               if(re == 0){
+                  layer.msg("操作成功");
+                  setTimeout("location.reload()",1000);
+               }else{
+                   layer.msg("操作失败");
+                  setTimeout("location.reload()",1000);
+               }
+              
+            }
+        })
+		  });
+	    }
+		</script>
+</body>
+
+</html>

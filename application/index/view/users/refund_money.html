@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{include file="public:header"}
+
+<body class="bg_normal">
+
+	<!-- 返回 -->
+	<div class="back_box">
+		
+        <ul class="bread">
+				<li>
+				 <a href="{:url('Index/index')}">首页</a>&nbsp;&gt;
+				</li>
+				<li>
+				 <a href="{:url('Users/indexs')}">个人中心</a>&nbsp;&gt;
+				</li>
+				<li>
+				<a href="javascript:;">仅退款</a>
+				</li>
+			   </ul>
+	</div>
+
+	<form action="mall_return_status.html" class="bg_white">
+		<div class="bd_btm_10">
+			<div class="p_12 flex_between bd_btm">
+				<span>退款金额</span><span class="col_main">￥{$re.zprice}</span>
+			</div>
+		</div>
+
+		<div class="bd_btm_10">
+			<div class="p_12 bd_btm">退款说明</div>
+
+			<textarea class="p_12" id="content" placeholder="填写退款说明，让咱更好改正" style="height: 140px;"></textarea>
+		</div>
+
+
+		<div class="p_12">
+			<button type="button" id="btn" class="confirm_btn">提交申请</button>
+		</div>
+	</form>
+
+	<script>
+     $("#btn").click(function(){
+        var content = $('#content').val();
+
+        if($.trim(content).length > 500 || $.trim(content).length == 0){
+            layer.msg("退款说明不得为空或超过500字");
+            return false;
+        }
+
+        var did="{$re.did}";
+
+        $.ajax({
+            type:"post",
+            url:"{:url('Users/save_money')}",
+            data:{did:did,content:content},
+            dataType:"text",
+            success:function(re){
+                 if(re == 0){
+                     layer.msg("提交成功");
+                     location.href="{:url('Users/refund_success')}?did="+did;
+                 }else{
+                    layer.msg("提交失败");
+                    setTimeout("location.href=\"{:url('Users/indexs')}\"",1000);
+                 }
+            }
+        })
+
+
+
+     })
+    
+    </script>
+
+
+</body>
+
+</html>

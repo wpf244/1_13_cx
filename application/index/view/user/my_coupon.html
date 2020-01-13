@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{include file="public:header"}
+
+<body class="">
+
+		<div class="back_box">
+				
+				<ul class="bread">
+						<li>
+						 <a href="{:url('Index/index')}">首页</a>&nbsp;&gt;
+						</li>
+						<li>
+						 <a href="{:url('User/index')}">个人中心</a>&nbsp;&gt;
+						</li>
+						<li>
+						<a href="javascript:;">我的优惠券</a>
+						</li>
+					   </ul>		
+			</div>
+
+
+	<!-- 公共顶部 -->
+{include file="public:top"}
+
+	<ul class="order_hd flex_around bd_btm">
+		<li class="order_item active tab_item">全部</li>
+		<li class="order_item tab_item">已使用</li>
+		<li class="order_item tab_item">未使用</li>
+	</ul>
+
+	<div class="tab_wrap">
+		<div class="tab_cont active">
+			<ul class="coupon_list">
+			{volist name="res" id="v"}
+				<li class="coupon_item">
+			{if condition="$v.status eq 1"}<span class="status active">已使用</span> {else /} <span class="status">未使用</span> {/if}
+	<div class="coupon_lt col_main">
+		<span class="">￥</span><span class="price">{$v.coupon}</span><span class="xian"></span>
+	</div>
+	<div class="coupon_rt am-text-center">
+		<h5 class="col_white">{$v.name}<br>限量使用</h5>
+		<div class="use">满{$v.money}即可使用</div>
+	</div>
+</li>
+			{/volist}
+			
+			</ul>
+		</div>
+		<div class="tab_cont">
+			<ul class="coupon_list">
+					{volist name="rey" id="vy"}
+					<li class="coupon_item">
+				<span class="status active">已使用</span> 
+		<div class="coupon_lt col_main">
+			<span class="">￥</span><span class="price">{$vy.coupon}</span><span class="xian"></span>
+		</div>
+		<div class="coupon_rt am-text-center">
+			<h5 class="col_white">{$vy.name}<br>限量使用</h5>
+			<div class="use">满{$vy.money}即可使用</div>
+		</div>
+	</li>
+				{/volist}
+			</ul>
+		</div>
+		<div class="tab_cont">
+			<ul class="coupon_list">
+					{volist name="rew" id="vw"}
+					<li class="coupon_item">
+			<span class="status">未使用</span>
+		<div class="coupon_lt col_main">
+			<span class="">￥</span><span class="price">{$vw.coupon}</span><span class="xian"></span>
+		</div>
+		<div class="coupon_rt am-text-center">
+			<h5 class="col_white">{$vw.name}<br>限量使用</h5>
+			<div class="use">满{$vw.money}即可使用</div>
+		</div>
+	</li>
+				{/volist}
+			</ul>
+		</div>
+	</div>
+
+	<div class="no_data">没有更多优惠券~</div>
+
+</body>
+
+</html>

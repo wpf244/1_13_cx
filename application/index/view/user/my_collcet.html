@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{include file="public:header"}
+
+<body class="">
+
+		<div class="back_box">
+				
+				<ul class="bread">
+						<li>
+						 <a href="{:url('Index/index')}">首页</a>&nbsp;&gt;
+						</li>
+						<li>
+						 <a href="{:url('User/index')}">个人中心</a>&nbsp;&gt;
+						</li>
+						<li>
+						<a href="javascript:;">我的收藏</a>
+						</li>
+					   </ul>		
+			</div>
+
+	<!-- 公共顶部 -->
+{include file="public:top"}
+
+	<div class="p_6">
+		<div class="am-g">
+
+				<ul class="order_hd flex_around bd_btm">
+						<li class="order_item tab_item active">乡村旅游</li>
+						<li class="order_item tab_item">景区</li>
+						<li class="order_item tab_item">美食</li>
+						<li class="order_item tab_item">酒店</li>
+					</ul>
+					<ul class="tab_wrap">
+							<li class="tab_cont active">
+									<ul>
+									
+										{volist name="res1" id="v1"}
+											<li>
+													<a href="{:url('Rural/detail',array('id'=>$v1['gid']))}">
+														<h3 style="font-size: 14px;color:#4F4F4F;">{$v1.title}</h3>
+														<p style="color: #8C8C8C;">{:strip_tags(mb_substr($v1['content'],0,80,'utf8'))}</p>
+																
+													</a>
+
+													<div style="text-align: right" onclick="dels({$v1.id})">取消收藏</div>
+												</li>
+                                         {/volist}
+									</ul>
+								
+									<div class="no_data">暂无更多记录~</div>
+								
+								</li>
+				
+						<li class="tab_cont">
+								<ul>
+										{volist name="res2" id="v2"}
+											<li>
+													<a href="{:url('Spot/detail',array('id'=>$v2['gid']))}">
+														<h3 style="font-size: 14px;color:#4F4F4F;">{$v2.title}</h3>
+														<p style="color: #8C8C8C;">{:strip_tags(mb_substr($v2['content'],0,80,'utf8'))}</p>
+																
+													</a>
+
+													<div style="text-align: right" onclick="dels({$v2.id})">取消收藏</div>
+												</li>
+                                         {/volist}
+												
+									</ul>
+				
+							<div class="no_data">暂无更多记录~</div>
+				
+						</li>
+						<li class="tab_cont">
+								<ul>
+										{volist name="res3" id="v3"}
+											<li>
+													<a href="{:url('Food/detail',array('id'=>$v3['gid']))}">
+														<h3 style="font-size: 14px;color:#4F4F4F;">{$v3.title}</h3>
+														<p style="color: #8C8C8C;">{:strip_tags(mb_substr($v3['content'],0,80,'utf8'))}</p>
+																
+													</a>
+
+													<div style="text-align: right" onclick="dels({$v3.id})">取消收藏</div>
+												</li>
+                                         {/volist}
+												
+									</ul>
+				
+							<div class="no_data">暂无更多记录~</div>
+				
+						</li>
+						<li class="tab_cont">
+								<ul>
+										{volist name="res4" id="v4"}
+											<li>
+													<a href="{:url('Hotel/detail',array('id'=>$v4['gid']))}">
+														<h3 style="font-size: 14px;color:#4F4F4F;">{$v4.title}</h3>
+														<p style="color: #8C8C8C;">{:strip_tags(mb_substr($v4['content'],0,80,'utf8'))}</p>
+																
+													</a>
+
+													<div style="text-align: right" onclick="dels({$v4.id})">取消收藏</div>
+												</li>
+                                         {/volist}
+									</ul>
+				
+							<div class="no_data">暂无更多记录~</div>
+				
+						</li>
+				
+					</ul>
+		
+		</div>
+	</div>
+	<script type="text/javascript">
+		function dels(id){
+			layer.confirm('你确定取消吗？', {icon: 3}, function(index){
+		    layer.close(index);
+		   
+			$.ajax({
+				type:"post",
+				url:"__URL__/delete_collect",
+				data:{id:id},
+				success:function(re)
+				{
+					if(re == 0){
+					layer.msg("操作成功");
+					setTimeout('location.reload()',2000)
+					}else{
+					layer.msg("操作失败");
+					setTimeout('location.reload()',2000)
+					}
+				}
+			})
+		  });
+	    }
+		</script>
+</body>
+
+</html>

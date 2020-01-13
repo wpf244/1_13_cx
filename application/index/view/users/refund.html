@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{include file="public:header"}
+
+<body class="bg_normal">
+
+	<!-- 返回 -->
+	<div class="back_box">
+		
+		<ul class="bread">
+				<li>
+				 <a href="{:url('Index/index')}">首页</a>&nbsp;&gt;
+				</li>
+				<li>
+				 <a href="{:url('Users/indexs')}">个人中心</a>&nbsp;&gt;
+				</li>
+				<li>
+				<a href="javascript:;">退货/退款</a>
+				</li>
+			   </ul>
+	</div>
+
+	<div class="bg_white">
+		<div class="p_12">选择服务类型</div>
+		<div class="">
+			{volist name="res" id="v"}
+			<div class="order_goods">
+	<img class="mar_rt_12" src="{$v.simage}" width="90" height="90" alt="">
+	<div class="flex_1">
+		<div class="order_wrap">
+			<div class="flex_1">
+				<div class="flex_between">
+					<h5 class="am-text-truncate">{$v.gname}</h5>
+					<span class="mar_lt_12">￥{$v.price}</span>
+				</div>
+				<div class="order_desc  col_nine">
+					<h6>{$v.sname}</h6>
+					
+				</div>
+			</div>
+			<div class="am-text-right col_nine ">X{$v.num}</div>
+		</div>
+	</div>
+</div>
+{/volist}
+			<div class="p_12 bd_btm am-text-right">
+				总金额：<span class="col_main am-text-lg">￥{$re.zprice}</span>
+			</div>
+		</div>
+
+		<a href="{:url('Users/refund_money',array('did'=>$re['did']))}" class="flex_between bd_btm p_12">
+			<div class="flex_only">
+				<img src="__HOME__/img/icon_return_1.png" class="mar_rt_12 mar_top_6" width="20" height="20" alt="">
+				<div class="flex_1">
+					<h6>仅退款</h6>
+					<div class="col_nine ">未收到货，或卖家协商同意前提下</div>
+				</div>
+			</div>
+			<img src="__HOME__/img/icon_right.png" width="6" height="11" alt="">
+		</a>
+		<a href="{:url('Users/refund_goods',array('did'=>$re['did']))}" class="flex_between bd_btm p_12">
+			<div class="flex_only">
+				<img src="__HOME__/img/icon_return_1.png" class="mar_rt_12 mar_top_6" width="20" height="20" alt="">
+				<div class="flex_1">
+					<h6>退货退款</h6>
+					<div class="col_nine ">已收到货，需要退换已收到的货物</div>
+				</div>
+			</div>
+			<img src="__HOME__/img/icon_right.png" width="6" height="11" alt="">
+		</a>
+	</div>
+
+</body>
+</html>

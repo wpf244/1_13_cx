@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{include file="public:header"}
+
+<body class="">
+
+	<!-- 返回 -->
+	<div class="back_box">
+			<ul class="bread">
+					<li>
+					 <a href="{:url('Index/index')}">首页</a>&nbsp;&gt;
+					</li>
+					<li>
+					 <a href="{:url('Users/indexs')}">个人中心</a>&nbsp;&gt;
+					</li>
+					<li>
+					<a href="javascript:;">余额明细</a>
+					</li>
+				   </ul>
+	</div>
+
+	<div class="order_menu">
+			<a href="{:url('Users/money_detail')}" class="order_single ">充值明细</a>
+			<a href="{:url('Users/money_details')}" class="order_single active">消费明细</a>
+
+		</div>
+
+	<style>
+		.money th {
+			text-align: center;
+		}
+		.money td{
+			text-align: center;
+			width: 25%;
+		}
+		.money{
+			height: 50px;
+		}
+		</style>
+
+	<ul class="order_list">
+	  <table style="width: 100%;">
+		  <thead>
+		  <tr class="money">
+
+			  <th>金额</th>
+
+			  <th>备注</th>
+			  <th>时间</th>
+			  <th>操作</th>
+
+		  </tr>
+		  </thead>
+
+		  <tbody>
+            {volist name="res" id="v"}
+         <tr class="money">
+		  <td>{$v.money}</td>
+
+		  <td>{$v.content}</td>
+		  <td>{$v.time|date="Y-m-d H:i:s",###}</td>
+		  <td><a href="{:url('Users/dd_detail',array('did'=>$v['did']))}">查看详情</a></td>
+
+		 </tr>
+		{/volist}
+		  </tbody>
+
+	  </table>
+	</ul>
+
+	<div class="no_data">暂无更多信息~</div>
+
+
+
+</body>
+
+</html>

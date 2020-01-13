@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{include file="public:header"}
+
+<body class="" style="padding-bottom: 56px;">
+
+	<!-- 返回 -->
+	<div class="back_box">
+		
+		<ul class="bread">
+				<li>
+				 <a href="{:url('Index/index')}">首页</a>&nbsp;&gt;
+				</li>
+				<li>
+						<a href="{:url('Users/indexs')}">个人中心</a>&nbsp;&gt;
+					   </li>
+				<li>
+				 <a href="javascript:;">订单详情</a>
+				</li>
+				
+			   </ul>
+	</div>
+
+	<a href="javascript:;" class="deliver bd_btm_10 flex_between p_12">
+
+		<div class="flex_1 ">
+			<div class="flex_between">
+				{if condition="$dd.status eq 1"}<strong style="margin-left: 30px;font-size: 2rem;color: red;">等待付款</strong>{/if}
+				{if condition="$dd.status eq 2"}<strong style="margin-left: 30px;font-size: 2rem;color: red;">等待发货</strong>{/if}
+				{if condition="$dd.status eq 3"}<strong style="margin-left: 30px;font-size: 2rem;color: red;">等待收货</strong>{/if}
+				{if condition="$dd.status eq 4"}<strong style="margin-left: 30px;font-size: 2rem;color: red;">已完成</strong>{/if}
+			</div>
+
+		</div>
+		<!--		<img src="__HOME__/img/icon_right.png" class="mar_lt_12" width="6" height="11" alt="" />-->
+	</a>
+{if condition="$dd.status eq 3 OR $dd.status eq 4"}
+	<a href="{:url('Users/express_detail',array('did'=>$dd['did']))}" class="deliver bd_btm_10 flex_between p_12">
+		<img src="__HOME__/img/icon_support_6.png" class="mar_rt_12" width="16" height="16" alt="">
+		<div class="flex_1 ">
+			<div class="flex_between">
+				<span>{$arr.context}</span>
+			</div>
+			<div>{$arr.time}</div>
+		</div>
+				<img src="__HOME__/img/icon_right.png" class="mar_lt_12" width="6" height="11" alt="" />
+	</a>
+{/if}
+	<a href="javascript:;" class="deliver bd_btm_10 flex_between p_12">
+		<img src="__HOME__/img/icon_mall_position.png" class="mar_rt_12" width="16" height="16" alt="">
+		<div class="flex_1 ">
+			<div class="flex_between">
+				<span>收货人：{$dd.username}</span><span>电话：{$dd.phone}</span>
+			</div>
+			<div>地址：{$dd.addr}</div>
+		</div>
+<!--		<img src="__HOME__/img/icon_right.png" class="mar_lt_12" width="6" height="11" alt="" />-->
+	</a>
+
+
+	<div class="bg_white">
+		<div class="p_12">全部商品</div>
+      {volist name="res" id="v"}
+		<div class="order_goods">
+	<img class="mar_rt_12" src="{$v.simage}" width="90" height="90" alt="">
+	<div class="flex_1">
+		<div class="order_wrap">
+			<div class="flex_1">
+				<div class="flex_between">
+					<h5 class="am-text-truncate">{$v.gname} {$v.gcode} ({$v.gtype})</h5>
+					<span class="mar_lt_12">￥{$v.price}</span>
+				</div>
+				<div class="order_desc  col_nine">
+					<h6>{$v.gspecs}</h6>
+
+				</div>
+			</div>
+			<div class="am-text-right col_nine ">X{$v.num}</div>
+			<div class="am-text-right">
+				小计：<span class="col_main am-text-lg">￥{$v['zprice']}</span>
+			</div>
+		</div>
+	</div>
+</div>
+{/volist}	
+	
+		<div class="p_12 bd_btm am-text-right">
+			合计：<span class="col_main am-text-lg">￥{$dd['zprice']}</span>
+		</div>
+	
+		<div class="flex_normal p_12 bd_btm">
+			<label for="" class="made_lb">订单备注</label>
+			<input type="text" class="flex_1" id="content"value="{$dd.content}" readonly>
+		</div>
+
+		<div class="flex_normal p_12 bd_btm">
+
+				<input type="radio" name="collection" disabled {if condition="$dd.collection eq 2"} checked {/if} class="js-form no" /> <span style="margin-left: 5px;margin-top: 4px;">不代收</span>
+
+			<input type="radio" name="collection" disabled {if condition="$dd.collection eq 1"} checked {/if}  class="js-form yes" style="margin-left: 15px;" /> <span style="margin-left: 5px;margin-top: 4px;">代收</span>
+
+		</div>
+		{if condition="$dd.collection eq 1"}
+		<div class="flex_normal p_12 bd_btm" id="money" >
+			<label for="" class="made_lb">代收金额</label>
+			<input type="number" class="flex_1" name="collection_money" style="width: 150px;" readonly value="{$dd.collection_money}">
+		</div>
+		{/if}
+
+		{if condition="$dd.fare neq 0"}
+		<div class="flex_normal p_12 bd_btm" id="money" >
+			<label for="" class="made_lb">运费</label>
+			<input type="number" class="flex_1" name="collection_money" style="width: 150px;" readonly value="{$dd.fare}">
+		</div>
+		{/if}
+		<div class="flex_normal p_12 bd_btm" >
+			<label for="" class="made_lb">订单编号</label>
+			<input type="text" class="flex_1" name="collection_money" style="width: 150px;" readonly value="{$dd.code}">
+		</div>
+
+		<div class="flex_normal p_12 bd_btm" >
+			<label for="" class="made_lb">创建时间</label>
+			<input type="text" class="flex_1" name="collection_money" style="width: 150px;" readonly value="{$dd.time|date='Y-m-d H:i:s',###}">
+		</div>
+
+		{if condition="$dd.status gt 1"}
+		<div class="flex_normal p_12 bd_btm" >
+			<label for="" class="made_lb">付款时间</label>
+			<input type="text" class="flex_1" name="collection_money" style="width: 150px;" readonly value="{$dd.fu_time|date='Y-m-d H:i:s',###}">
+		</div>
+		{/if}
+
+		{if condition="$dd.status gt 2"}
+		<div class="flex_normal p_12 bd_btm" >
+			<label for="" class="made_lb">发货时间</label>
+			<input type="text" class="flex_1" name="collection_money" style="width: 150px;" readonly value="{$dd.fa_time|date='Y-m-d H:i:s',###}">
+		</div>
+		{/if}
+
+		{if condition="$dd.status gt 3"}
+		<div class="flex_normal p_12 bd_btm" >
+			<label for="" class="made_lb">成交时间</label>
+			<input type="text" class="flex_1" name="collection_money" style="width: 150px;" readonly value="{$dd.shou_time|date='Y-m-d H:i:s',###}">
+		</div>
+		{/if}
+
+
+	</div>
+
+
+
+</body>
+
+</html>

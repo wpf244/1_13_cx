@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{include file="public:header"}
+
+<body class="pad_btm">
+
+	<!-- 返回 -->
+	<div class="back_box">
+		
+		<ul class="bread">
+				<li>
+				 <a href="{:url('Index/index')}">首页</a>&nbsp;&gt;
+				</li>
+				<li>
+				 <a href="javascript:;">商城中心</a>
+				</li>
+				
+			   </ul>
+	</div>
+
+	<div class="bd_btm_10">
+		<div class="p_12 bg_white">
+			<a href="{:url('Index/search')}" class="search_unit flex_normal mar_btm_12">
+				<img src="__HOME__/img/icon_search.png" class="mar_rt_12" width="18" height="18" alt="">
+				<input type="text" class="flex_1" placeholder="请输入搜索关键词" readonly>
+			</a>
+			<!-- banner -->
+		
+
+			<div data-am-widget="slider" class="am-slider am-slider-a1" data-am-slider='{&quot;directionNav&quot;:false}' style="position: relative;">
+					<ul class="am-slides">
+					 {volist name="lb" id="vb"}	
+						<li>
+							<a {if condition="$vb.url neq '' "} href="{$vb.url}" {/if} >
+								<div style="height: 150px;background-image: url({$vb.image});background-size: cover;background-repeat: no-repeat;background-position: center;"></div>
+							</a>
+							<!-- <img src="{$vb.image}"> -->
+						</li>
+					{/volist}
+					</ul>
+					
+				</div>
+
+			<div class="am-cf" style="margin-top: 10px;">
+			  {volist name="type" id="vt"}
+				<a href="{:url('Index/kind',array('id'=>$vt['type_id']))}" style="width: 20%;" class="kind_cell  am-text-center">
+					<img src="{$vt.type_image}" width="32" height="32" alt="">
+					<div class="mar_top_12 am-text-truncate">{$vt.type_name}</div>
+				<a>
+			 {/volist}
+			</div>
+		</div>
+	</div>
+
+
+
+	<div class="p_6">
+		<ul class="am-g">
+			
+		  {volist name="goods" id="vg"}
+			<li class="am-u-sm-6">
+				<div class="goods_item">
+	<a href="{:url('Index/detail',array('id'=>$vg['id']))}" class="goods_pic" style="background-image: url({$vg.image});"></a>
+	<div class="goods_wrap">
+		<a href="{:url('Index/detail',array('id'=>$vg['id']))}" class="goods_title">{$vg.name} &nbsp;&nbsp;{$vg.code} ({$vg.type})</a>
+		<div class="goods_flex">
+			<span class="goods_price">￥{$vg.xprice}</span>
+			<a class="goods_btn" href="{:url('Index/detail',array('id'=>$vg['id']))}">查看详情</a>
+		</div>
+	</div>
+</div>
+			</li>
+		 {/volist}
+		</ul>
+	</div>
+	
+
+	<!-- 底部导航 -->
+{include file="public:footers"}
+
+
+
+</body>
+
+</html>

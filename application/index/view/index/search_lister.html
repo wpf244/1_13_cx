@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{include file="public:header"}
+
+<body class="pad_btm">
+
+	<!-- 返回 -->
+	<div class="back_box">
+		
+		<ul class="bread">
+				<li>
+				 <a href="{:url('Index/index')}">首页</a>&nbsp;&gt;
+				</li>
+				<li>
+				 <a href="javascript:;">搜索结果</a>
+				</li>
+				
+			   </ul>
+	</div>
+
+
+
+	<div class="p_6">
+		<ul class="am-g">
+			
+		  {volist name="goods" id="vg"}
+			<li class="am-u-sm-6">
+				<div class="goods_item">
+	<a href="{:url('Index/detail',array('id'=>$vg['id']))}" class="goods_pic" style="background-image: url({$vg.image});"></a>
+	<div class="goods_wrap">
+		<a href="{:url('Index/detail',array('id'=>$vg['id']))}" class="goods_title">{$vg.name} &nbsp;&nbsp;{$vg.code} ({$vg.type})</a>
+		<div class="goods_flex">
+			<span class="goods_price">￥{$vg.xprice}</span>
+			<a class="goods_btn" href="{:url('Index/detail',array('id'=>$vg['id']))}">查看详情</a>
+		</div>
+	</div>
+</div>
+			</li>
+		 {/volist}
+		</ul>
+	</div>
+	<div class="no_data">暂无更多记录~</div>
+
+	<!-- 底部导航 -->
+{include file="public:footers"}
+
+
+
+</body>
+
+</html>

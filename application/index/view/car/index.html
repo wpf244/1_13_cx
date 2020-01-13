@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{include file="public:header"}
+
+<body class="">
+
+	<!-- 返回 -->
+	<div class="back_box">
+		
+		<ul class="bread">
+				<li>
+				 <a href="{:url('Index/index')}">首页</a>&nbsp;&gt;
+				</li>
+				<li>
+				 <a href="javascript:;">汽车租赁</a>
+				</li>
+				
+			   </ul>
+	</div>
+
+	<!-- 公共顶部 -->
+{include file="public:top"}
+
+<div data-am-widget="slider" class="am-slider am-slider-a1" data-am-slider='{&quot;directionNav&quot;:false}' style="position: relative;">
+		<ul class="am-slides">
+		 {volist name="lb" id="vb"}	
+			<li>
+				<a {if condition="$vb.url neq '' "} href="{$vb.url}" {/if} >
+					<div style="height: 150px;background-image: url({$vb.image});background-size: cover;background-repeat: no-repeat;background-position: center;"></div>
+				</a>
+				<!-- <img src="{$vb.image}"> -->
+			</li>
+		{/volist}
+		</ul>
+		
+	</div>
+
+	<div class="pad_12">
+	  {volist name="res" id="v"}
+		<div  data-id="{$v.id}" class="flex_normal pd_12 bd_btm">
+	<div class="hotel_piao bd_radius mar_rt_12 bg_cover" style="background-image:url({$v.image});"></div>
+	<div class="flex_1">
+		<div class="hotel_wrap">
+			<h3>{$v.name}</h3>
+			<div class="flex_1  col_nine">{$v.addr}</div>
+			<div class="flex_between">
+				<span class="col_deputy">{$v.type}</span>
+				<div class="flex_normal">
+						<a href="tel:{$v.phone}"><img src="__HOME__/img/icon_car_tel.png" width="16" height="16" alt=""><span class="mar_lt_6 call_phone">{$v.phone}</span></a>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+	{/volist}	
+	</div>
+<script>
+$(".bd_btm").click(function(){
+	var id = $(this).data("id");
+  
+	window.location.href="{:url('Car/detail')}?id="+id;
+})
+
+</script>
+	<div class="no_data">暂无更多记录~</div>
+
+</body>
+
+</html>

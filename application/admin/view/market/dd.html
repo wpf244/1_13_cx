@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html>
+{include file="public:header"}
+
+<body class="no-skin">
+  <!--头部-->
+  {include file="public:nav"}
+
+  <div class="main-container ace-save-state" id="main-container">
+    <!--菜单-->
+    <script type="text/javascript">
+      try { ace.settings.loadState('main-container') } catch (e) { }
+    </script>
+
+    {include file="public:left"}
+
+    <div class="main-content">
+      <div class="main-content-inner">
+        <div class="breadcrumbs ace-save-state" id="breadcrumbs">
+          <ul class="breadcrumb">
+            <li>
+              <i class="ace-icon fa fa-home home-icon"></i>
+              <a href="{:url('Index/index')}">首页</a>
+            </li>
+            <li class="active">订单管理</li>
+          </ul>
+
+        </div>
+
+        <div class="page-content">
+          {include file="public:set"}
+          <div class="row">
+            <div class="col-xs-12">
+              <div class="col-sm-10 col-sm-offset-1">
+                <div class="page-header">
+                  <div class="row">
+                    <div class="col-sm-2">
+                      <a class="btn btn-success btn-white btn-bold" href="javascript:;" id="out">
+                        <i class="ace-icon fa fa-plus icon-only"></i>
+                        导出excel</a>
+                    </div>
+
+                    <div class="col-sm-10 clearfix">
+                      <form class="form-inline pull-right" action="">
+
+
+                        <div class="form-group">
+                          <div class="input-group">
+                            <span class="input-group-addon">
+                              <i class="fa fa-th-list"></i>
+                            </span>
+                            <select class="form-control" name="type">
+                              <option value="0">选择供货渠道</option>
+
+                              <option {if condition="$type eq 1" } selected {/if} value="1">代理商</option>
+                              <option {if condition="$type eq 2" } selected {/if} value="2">客服</option>
+                            </select>
+                          </div>
+                        </div>
+
+
+                        <div class="form-group">
+                          <div class="input-daterange input-group">
+                            <input type="text" class="form-control search-query" name="start" value="{$start}"
+                              placeholder="选择开始时间" />
+                            <span class="input-group-addon">
+                              <i class="fa fa-exchange"></i>
+                            </span>
+
+                            <input type="text" class="form-control search-query" name="end" value="{$end}"
+                              placeholder="选择结束时间" />
+                          </div>
+
+                        </div>
+
+                        <div class="form-group">
+                          <div class="input-group">
+                            <input type="text" name="code" class="form-control search-query" value="{$code}"
+                              placeholder="请输入业务员">
+                          </div>
+
+                          <div class="input-group">
+                            <input type="text" name="goods" class="form-control search-query" value="{$goods}"
+                              placeholder="请输入商品名称或货号">
+                          </div>
+
+                          <div class="input-group">
+                            <input type="text" name="addr" class="form-control search-query" value="{$addr}"
+                              placeholder="请输入收货人信息">
+                            <span class="input-group-btn">
+                              <button type="submit" class="btn btn-info btn-sm ajax-search-form">
+                                <span class="ace-icon fa fa-search icon-on-right bigger-120"></span> 搜索
+                              </button>
+                            </span>
+                          </div>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+                <table class="table table-bordered table-hover">
+                  <thead>
+                    <tr>
+
+                      <!-- <th>ID</th> -->
+                      <th>业务员</th>
+                      <th>供货渠道</th>
+                      <th>收货地址</th>
+                      <th>收货人</th>
+                      <th>手机号码</th>
+                      <th>产品代码</th>
+                      <th>产品名称</th>
+                      <th>规格型号</th>
+                      <th>购买数量</th>
+                      <th>出厂单价</th>
+                      <th>出厂金额</th>
+                      <th>支付时间</th>
+                      <th>订单备注</th>
+                      <th style="border-right:#ddd solid 1px;">操作</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {volist name="list" id="v"}
+                    <tr class="ace-thumbnails">
+                      <!-- <td><span class="badge badge-grey">{$v.did}</span></td> -->
+                      <td>{$v.nickname}</td>
+                      <td>{if condition="$v.type eq 1"}代理商 {else /} 客服 {/if}</td>
+                      <td>{$v.addr}</td>
+                      <td>{$v.username}</td>
+                      <td>{$v.phone}</td>
+                      <td>{$v.gcode}</td>
+                      <td>{$v.gname}</td>
+                      <td>{$v.gtype}</td>
+                      <td>{$v.num}</td>
+                      <td>{$v.price}</td>
+                      <td>{$v.zprice}</td>
+                      <td>{$v.time|date="Y-m-d H:i:s",###}</td>
+                      <td>{$v.content}</td>
+                      <td>
+                        <a class="btn btn-xs btn-info" href="{:url('Market/detail',array('id'=>$v['did']))}">
+                          订单详情
+                        </a>
+
+                      </td>
+
+                    </tr>
+                    {/volist}
+                    {empty name="list"}<tr>
+                      <td colspan="18" class="text-center">暂无数据</td>
+                    </tr>{/empty}
+                  </tbody>
+                </table>
+                <form class="form-inline pull-left" action="" id="myform">
+                <div class="form-inline pull-left">
+                 <span class="lbl padding-6">每页显示</span> 
+                       <select  name="pagesize" onchange="submitForm();" class="form-control">
+                    <option value="10" {if condition="$pagesize eq 10"} selected {/if} >10条</option>
+                    <option value="20" {if condition="$pagesize eq 20"} selected {/if} >20条</option>
+                    <option value="50" {if condition="$pagesize eq 50"} selected {/if} >50条</option>
+                  </select>
+                 
+                </div>
+                </form>
+               <script>
+               //表单提交
+                  function submitForm(){
+                      var form = document.getElementById("myform");
+                      form.submit();
+                  }
+
+               </script>
+                <div class="text-center">
+                  {$page}
+                </div>
+              </div>
+            </div><!-- /.col -->
+          </div><!-- /.row -->
+        </div><!-- /.page-content -->
+      </div>
+    </div><!-- /.main-content -->
+
+    {include file="public:footer"}
+
+    <a href="#" id="btn-scroll-up" class="btn-scroll-up btn btn-sm btn-inverse">
+      <i class="ace-icon fa fa-angle-double-up icon-only bigger-110"></i>
+    </a>
+  </div><!-- /.main-container -->
+
+  <script>
+    jQuery(function ($) {
+
+      $('.input-daterange').datepicker({
+        autoclose: true,
+        language: "zh-CN",
+        format: "yyyy-mm-dd"
+      });
+
+      $('[data-rel=tooltip]').tooltip();
+
+      $("#hide-option").tooltip({
+        hide: {
+          effect: "explode",
+          delay: 250
+        }
+      });
+
+    })
+  </script>
+  <script>
+    $("#out").click(function () {
+      var start = "{$start}";
+      var end = "{$end}";
+      var code = "{$code}";
+      var addr = "{$addr}";
+      var type = "{$type}";
+      var goods ="{$goods}";
+      var pagesize="{$pagesize}";
+      var pagenum="{$pagenum}";
+      if (start == '') {
+        start = 0;
+      }
+      if (end == '') {
+        end = 0;
+      }
+
+      if (code == '') {
+        code = 0;
+      }
+
+      if (addr == '') {
+        addr = 0;
+      }
+      location.href = "__URL__/out/start/" + start + "/end/" + end + "/code/" + code + "/addr/" + addr + "/type/" + type+ "/goods/" + goods+ "/pagesize/" + pagesize+ "/pagenum/" + pagenum;
+    })
+  </script>
+  <script type="text/javascript">
+    function dels(id) {
+      layer.confirm('你确定删除吗？', { icon: 3 }, function (index) {
+        layer.close(index);
+        window.location.href = "__URL__/delete/id/" + id;
+      });
+    }
+  </script>
+  <script type="text/javascript">
+    function change(id) {
+      layer.confirm('你确定已付款吗？', { icon: 3 }, function (index) {
+        layer.close(index);
+        window.location.href = "__URL__/change/id/" + id;
+      });
+    }
+  </script>
+  <script>
+    function changes(id) {
+      $.ajax({
+        type: "post",
+        url: "__URL__/changes",
+        data: { id: id },
+        datatype: "text",
+        success: function () {
+
+        }
+      })
+    }
+    function changeu(id) {
+      $.ajax({
+        type: "post",
+        url: "__URL__/changeu",
+        data: { id: id },
+        datatype: "text",
+        success: function () {
+
+        }
+      })
+    }
+    function changea(id) {
+      $.ajax({
+        type: "post",
+        url: "__URL__/changea",
+        data: { id: id },
+        datatype: "text",
+        success: function () {
+
+        }
+      })
+    }
+    function changel(id) {
+      $.ajax({
+        type: "post",
+        url: "__URL__/changel",
+        data: { id: id },
+        datatype: "text",
+        success: function () {
+
+        }
+      })
+    }
+    function changess(id) {
+      $.ajax({
+        type: "post",
+        url: "__URL__/changess",
+        data: { id: id },
+        datatype: "text",
+        success: function () {
+
+        }
+      })
+    }
+    function changeh(id) {
+      $.ajax({
+        type: "post",
+        url: "__URL__/changeh",
+        data: { id: id },
+        datatype: "text",
+        success: function () {
+
+        }
+      })
+    }
+  </script>
+
+
+  <script>
+    $("#change").click(function () {
+      $("#sortForm").submit();
+    })
+
+  </script>
+</body>
+
+</html>

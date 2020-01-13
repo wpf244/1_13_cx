@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{include file="public:header"}
+
+<body class="" style="padding-bottom: 56px;">
+
+	<!-- 返回 -->
+	<div class="back_box">
+			<ul class="bread">
+		<li>
+				<a href="{:url('Index/index')}">首页</a>&nbsp;&gt;
+			   </li>
+			   <li>
+				<a href="{:url('Goods/index')}">商城中心</a>&nbsp;&gt;
+			   </li>
+			   <li>
+			   <a href="javascript:;">确认订单</a>
+			   </li>
+			  </ul>
+	</div>
+  {empty name="$addr"}
+	<!-- 没有收货地址时显示 -->
+	<a href="{:url('Users/add_addr')}" class="deliver bd_btm_10 flex_between p_12">
+		<div class="flex_1">
+			！请填写收货地址
+		</div>
+		<img src="__HOME__/img/icon_right.png" width="6" height="11" alt="" />
+	</a>
+{else /}
+	<!-- 有收货地址时显示 -->
+	<a href="{:url('Users/choose_addr')}" class="deliver bd_btm_10 flex_between p_12">
+		<img src="__HOME__/img/icon_mall_position.png" class="mar_rt_12" width="16" height="16" alt="">
+		<div class="flex_1 ">
+			<div class="flex_between">
+				<span>收货人：{$addr.username}</span><span>电话：{$addr.phone}</span>
+			</div>
+			<div>地址：{$addr.addr}{$addr.addrs}</div>
+		</div>
+		<img src="__HOME__/img/icon_right.png" class="mar_lt_12" width="6" height="11" alt="" />
+	</a>
+{/empty}
+	<div class="bg_white">
+		<div class="p_12">全部商品</div>
+
+		<div class="order_goods">
+	<img class="mar_rt_12" src="{$spec['s_image']}" width="90" height="90" alt="">
+	<div class="flex_1">
+		<div class="order_wrap">
+			<div class="flex_1">
+				<div class="flex_between">
+					<h5 class="am-text-truncate">{$goods['name']}</h5>
+					<span class="mar_lt_12">￥{$spec['s_xprice']}</span>
+				</div>
+				<div class="order_desc  col_nine">
+					<h6>{$spec['s_name']}</h6>
+					<span class="hotel_line mar_lt_12">￥{$goods['xprice']}</span>
+				</div>
+			</div>
+			<div class="am-text-right col_nine ">X{$re.num}</div>
+		</div>
+	</div>
+</div>
+		
+	
+		<div class="p_12 bd_btm am-text-right">
+			合计：<span class="col_main am-text-lg">￥{$prices}</span>
+		</div>
+	
+		<div class="flex_normal p_12 bd_btm">
+			<label for="" class="made_lb">订单备注</label>
+			<input type="text" class="flex_1" id="content" placeholder="选填，给商家留言">
+		</div>
+	</div>
+
+	<div class="hotel_fixed flex_normal bg_white bd_top">
+		<div class="pad_12 flex_1 am-text-right">
+			总计：<span class="col_main am-text-lg font_bold">￥{$prices}</span>
+		</div>
+		<a id="go_buy" class="am-btn am-btn-danger" style="line-height:36px;">提交订单</a>
+	</div>
+
+	<script>
+			$("#go_buy").click(function(){
+				var aid ="{$addr['aid']}";
+				var did ="{$did}";
+				
+				if(aid == ''){
+					layer.msg("请添加收货地址");return false;
+				}
+
+				var content=$("#content").val();
+
+				$.ajax({
+					type:"post",
+					url:"{:url('Goods/sdd')}",
+					data:{aid:aid,did:did,content:content},
+					datatype:"text",
+					success:function(re){
+						if(re == 0){
+							layer.msg("系统繁忙，请稍后再试");
+							location.href="{:url('Goods/index')}";
+						}else{
+						
+							location.href="{:url('Pay/pay_dd')}?did="+re;
+						}
+					}
+				})
+			})
+		   
+		   </script>
+
+</body>
+
+</html>

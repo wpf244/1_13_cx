@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+{include file="public:header"}
+<link rel="stylesheet" href="__ADMIN__/css/express.css" />
+<body class="no-skin">
+<!--头部-->
+{include file="public:nav"}
+
+<div class="main-container ace-save-state" id="main-container">
+    <!--菜单-->
+    <script type="text/javascript">
+        try {
+            ace.settings.loadState('main-container')
+        } catch (e) {
+        }
+    </script>
+
+    {include file="public:left"}
+
+    <div class="main-content">
+        <div class="main-content-inner">
+            <div class="breadcrumbs ace-save-state" id="breadcrumbs">
+                <ul class="breadcrumb">
+                    <li>
+                        <i class="ace-icon fa fa-home home-icon"></i>
+                        <a href="{:url('Index/index')}">首页</a>
+                    </li>
+                    <li class="active">物流详情</li>
+                    <li class="active">
+                        <a href="javascript:history.back(-1)">
+                            返回
+                        </a></li>
+                </ul>
+
+            </div>
+
+            <div class="page-content">
+                {include file="public:set"}
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="col-sm-10 col-sm-offset-1">
+                            <div class="page-header">
+                                <div class="row">
+
+
+                                </div>
+                            </div>
+                            <div class="result-wrap" >
+                                                <div class="select-com relative">
+<!--                                                  <p class="head-control">-->
+<!--                                                    <a class="tips-close result-close" title="关闭查询结果"></a>-->
+<!--                                                    <a class="a-bindtel hidden" href="https://sso.kuaidi100.com/user/account.jsp" target="_blank" role="bind-btn" style="display: inline;">手机绑定</a>-->
+<!--                                                    <a class="a-print">打印查询结果</a>       <a class="a-share">分享</a>       <a class="a-rss">订阅</a></p>-->
+                                                  <span class="single-name">{$dd.express}</span>
+<!--                                                  <a target="_blank" class="mr10px result-companyurl" rel="nofollow" href="http://www.sf-express.com">官网</a>-->
+                                                  <span >{$dd.number}</span>
+<!--                                                  <a href="###" target="_blank">在线客服</a></span>       &lt;!&ndash;<span class="ico-refresh" title="刷新"></span> &ndash;&gt;-->
+<!--                                                  <a role="sent-order" href="https://www.postpony.com/usps/discount/kuaidi100?share=kuaidi100" target="_blank" class="mr10px sent-order hidden" rel="nofollow" style="display: none;">【美国省钱寄快递】</a>-->
+                                                  <span role="timeCost" class="ico-clock hidden"></span>
+                                                  <span role="arrTime" class="ico-date hidden"></span>    </div>
+                                <div class="relative query-box">
+                                    <div class="result-top" id="resultTop">
+                                        <span class="col1" title="切换排序" role="sort">时间</span>
+                                        <span class="col2">地点和跟踪进度</span></div>
+                                    <table class="result-info" cellspacing="0">
+                                        <tbody>
+
+                                        {volist name="data" id="v" key="k"}
+                                        <tr {if condition="$k eq 1"} class="last" {/if} key="{$k}" keys={max($k)}>
+                                            <td class="row1">
+                                                <span class="day">{$v.time}</span></td>
+                                            <td {if condition="$k eq 1"} class="status status-wait" {elseif condition="$k eq $keys" /} class="status status-first" {else /} class="status" {/if} >&nbsp;
+                                        {if condition="$k neq $keys"}
+                                        <div class="col2">
+                                            <span class="step"><span class="line1"></span><span class="line2"></span></span>
+                                            </div>
+                                        {/if}
+                                            </td>
+                                            <td class="contex" t="">{$v.context}
+                                            </td>
+                                        </tr>
+
+                                        {/volist}
+
+                                    </table>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div><!-- /.col -->
+                </div><!-- /.row -->
+            </div><!-- /.page-content -->
+        </div>
+    </div><!-- /.main-content -->
+
+    {include file="public:footer"}
+
+    <a href="#" id="btn-scroll-up" class="btn-scroll-up btn btn-sm btn-inverse">
+        <i class="ace-icon fa fa-angle-double-up icon-only bigger-110"></i>
+    </a>
+</div><!-- /.main-container -->
+
+<script>
+    jQuery(function ($) {
+
+        $('.input-daterange').datepicker({
+            autoclose: true,
+            language: "zh-CN",
+            format: "yyyy-mm-dd"
+        });
+
+        $('[data-rel=tooltip]').tooltip();
+
+        $("#hide-option").tooltip({
+            hide: {
+                effect: "explode",
+                delay: 250
+            }
+        });
+
+    })
+</script>
+
+<script type="text/javascript">
+    function dels(id) {
+        layer.confirm('你确定删除吗？', {icon: 3}, function (index) {
+            layer.close(index);
+            window.location.href = "__URL__/delete/id/" + id;
+        });
+    }
+</script>
+<script>
+    function changes(id) {
+        $.ajax({
+            type: "post",
+            url: "__URL__/changes",
+            data: {id: id},
+            datatype: "text",
+            success: function () {
+
+            }
+        })
+    }
+
+    function changeu(id) {
+        $.ajax({
+            type: "post",
+            url: "__URL__/changeu",
+            data: {id: id},
+            datatype: "text",
+            success: function () {
+
+            }
+        })
+    }
+
+    function changea(id) {
+        $.ajax({
+            type: "post",
+            url: "__URL__/changea",
+            data: {id: id},
+            datatype: "text",
+            success: function () {
+
+            }
+        })
+    }
+
+    function changel(id) {
+        $.ajax({
+            type: "post",
+            url: "__URL__/changel",
+            data: {id: id},
+            datatype: "text",
+            success: function () {
+
+            }
+        })
+    }
+
+    function changess(id) {
+        $.ajax({
+            type: "post",
+            url: "__URL__/changess",
+            data: {id: id},
+            datatype: "text",
+            success: function () {
+
+            }
+        })
+    }
+
+    function changeh(id) {
+        $.ajax({
+            type: "post",
+            url: "__URL__/changeh",
+            data: {id: id},
+            datatype: "text",
+            success: function () {
+
+            }
+        })
+    }
+</script>
+
+
+<script>
+    $("#change").click(function () {
+        $("#sortForm").submit();
+    })
+
+</script>
+</body>
+</html>

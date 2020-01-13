@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{include file="public:header"}
+
+<body class="bg_normal pad_btm">
+
+	<!-- 返回 -->
+	<div class="back_box">
+		
+		<ul class="bread">
+				<li>
+				 <a href="{:url('Index/index')}">首页</a>&nbsp;&gt;
+				</li>
+				<li>
+				 <a href="javascript:;">个人中心</a>
+				</li>
+				
+			   </ul>
+	</div>
+
+	<div class="user_top bg_main flex_normal">
+		<a href="javascript:;" class="am-block mar_rt_12">
+		  {empty name="$user['image']"}	
+			<img src="__HOME__/img/thumb.png" width="60" height="60" alt="">
+			{else /}
+			<img src="{$user.image}" width="60" height="60" alt="">
+		  {/empty}
+		</a>
+		<div class="flex_1">
+			<h5 class="am-text-truncate am-text-lg font_bold mar_btm_6">{empty name="$user['nickname']"}尊贵的会员 {else /}尊贵的{$user.nickname} {/empty}</h5>
+			<div>Hi~等你好久了~</div>
+		</div>
+
+		<div class="flex_1">
+			<h5 class="am-text-truncate am-text-lg font_bold mar_btm_6">账户余额</h5>
+			<div><a href="{:url('Users/money_detail')}">{$user.money} &nbsp; &nbsp; &nbsp; 明细<img src="__HOME__/img/icon_right.png" class="mar_lt_12" width="5" height="9" style="margin-bottom: 2px;margin-left: 8px;" alt="" /></a></div>
+		</div>
+	</div>
+
+	<div class="bd_btm_10">
+		<div class="am-cf p_12 bg_white">
+			<a href="{:url('Users/order_1')}" class="kind_cell  am-text-center">
+				<img src="__HOME__/img/icon_mall_order_dai.png" width="32" height="32" alt="">
+				<div class="mar_top_12 am-text-truncate">待付款</div>
+			</a>
+			<a href="order_2.html" class="kind_cell  am-text-center">
+					<img src="__HOME__/img/icon_mall_order_wan.png" width="32" height="32" alt="">
+					<div class="mar_top_12 am-text-truncate">待发货</div>
+				</a>
+			<a href="order_3.html" class="kind_cell  am-text-center">
+				<img src="__HOME__/img/icon_mall_order_shou.png" width="32" height="32" alt="">
+				<div class="mar_top_12 am-text-truncate">待收货</div>
+			</a>
+<!--			<a href="order_4.html" class="kind_cell  am-text-center">-->
+<!--				<img src="__HOME__/img/icon_mall_order_ping.png" width="32" height="32" alt="">-->
+<!--				<div class="mar_top_12 am-text-truncate">待评价</div>-->
+<!--			</a>-->
+			<a href="order_6.html" class="kind_cell  am-text-center">
+					<img src="__HOME__/img/icon_mall_order_wan.png" width="32" height="32" alt="">
+					<div class="mar_top_12 am-text-truncate">已完成</div>
+				</a>
+<!--			<a href="order_5.html" class="kind_cell  am-text-center">-->
+<!--				<img src="__HOME__/img/icon_mall_order_tui.png" width="32" height="32" alt="">-->
+<!--				<div class="mar_top_12 am-text-truncate">退款/售后</div>-->
+<!--			</a>-->
+		</div>
+	</div>
+
+	<a class="p_12 bd_btm flex_between bg_white" href="{:url('Users/collect')}">
+		<div class="flex_normal">
+			<img class="mar_rt_12" src="__HOME__/img/icon_collect.png" width="16" height="16" alt=""><span>我的收藏</span>
+		</div>
+		<img src="__HOME__/img/icon_right.png" width="6" height="11" alt="">
+	</a>
+
+	<a class="p_12 flex_between bg_white" href="{:url('Users/addr')}">
+		<div class="flex_normal">
+			<img class="mar_rt_12" src="__HOME__/img/icon_mall_position.png" width="16" height="16" alt=""><span>收货地址</span>
+		</div>
+		<img src="__HOME__/img/icon_right.png" width="6" height="11" alt="">
+	</a>
+
+	<a class="p_12 flex_between bg_white" href="{:url('Users/express_dd')}">
+		<div class="flex_normal">
+			<img class="mar_rt_12" src="__HOME__/img/icon_order.png" width="16" height="16" alt=""><span>运费订单</span>
+		</div>
+		<img src="__HOME__/img/icon_right.png" width="6" height="11" alt="">
+	</a>
+
+	<a class="p_12 flex_between bg_white" href="{:url('Login/out')}">
+		<div class="flex_normal">
+			<img class="mar_rt_12" src="__HOME__/img/icon_tan_close.png" width="16" height="16" alt=""><span>退出登录</span>
+		</div>
+		<img src="__HOME__/img/icon_right.png" width="6" height="11" alt="">
+	</a>
+
+{include file="public:footers"}
+
+</body>
+
+</html>

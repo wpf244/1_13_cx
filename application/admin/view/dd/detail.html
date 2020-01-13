@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html>
+{include file="public:header"}
+
+<body class="no-skin">
+<!--头部-->
+{include file="public:nav"}
+
+<div class="main-container ace-save-state" id="main-container">
+  <!--菜单-->
+  <script type="text/javascript">
+  try{ace.settings.loadState('main-container')}catch(e){}
+</script>
+
+{include file="public:left"}
+
+  <div class="main-content">
+    <div class="main-content-inner">
+      <div class="breadcrumbs ace-save-state" id="breadcrumbs">
+        <ul class="breadcrumb">
+          <li>
+            <i class="ace-icon fa fa-home home-icon"></i>
+            <a href="{:url('Index/index')}">首页</a>
+          </li>
+          <li class="active">订单详情</li>
+          <li class="active" >
+          <a href="javascript:history.back(-1)">
+                                  返回
+                                  </a></li>
+        </ul>
+
+      </div>
+
+      <div class="page-content">
+        {include file="public:set"}
+        <div class="row">
+          <div class="col-xs-12">
+            <div class="col-sm-10 col-sm-offset-1">
+              <div class="page-header">
+                <div class="row">
+           
+
+                 
+                </div>
+              </div>
+              <table width="100%" cellpadding="3" cellspacing="1" class="table table-bordered table-hover" >
+
+                <tr>
+                  <th colspan="4" style="text-align:center">基本信息</th>
+                </tr>
+
+                <tr>
+                  <td width="18%"><div align="right"><strong>订单号：</strong></div></td>
+                  <td width="34%">{$re.code}</td>
+                  <td width="15%"><div align="right"><strong>订单状态：</strong></div></td>
+                  <td>{if condition="$re.status eq 1"}待付款{/if}
+                    {if condition="$re.status eq 2"}待发货{/if}
+                    {if condition="$re.status eq 3"}待收货{/if}
+                    {if condition="$re.status eq 4"}已完成{/if}
+                  </td>
+                </tr>
+                <tr>
+                  <td><div align="right"><strong>购货人：</strong></div></td>
+                  <td>{$re.nickname} </td>
+                  <td><div align="right"><strong>下单时间：</strong></div></td>
+                  <td>{$re.time|date="Y-m-d H:i:s",###}</td>
+                </tr>
+                <tr>
+                  <td><div align="right"><strong>供货渠道：</strong></div></td>
+                  <td>{if condition="$re.type eq 1"}代理商{/if}
+                    {if condition="$re.type eq 2"}客服{/if}</td>
+                  <td><div align="right"><strong>付款时间：</strong></div></td>
+                  <td>{notempty name="$re.fu_time"}{$re.fu_time|date="Y-m-d H:i:s",###} {/notempty} </td>
+                </tr>
+                <tr>
+                  <td><div align="right"><strong>是否代收：</strong></div></td>
+                  <td>{if condition="$re.collection eq 1"} 是 {else /} 否 {/if}</td>
+                  <td><div align="right"><strong>代收金额（元）：</strong></div></td>
+                  <td>{if condition="$re.collection eq 1"} {$re.collection_money} {else /} 0 {/if}</td>
+                </tr>
+
+                <tr>
+
+                  <td><div align="right"><strong>订单备注：</strong></div></td>
+                  <td colspan="3">{$re.content}</td>
+                </tr>
+
+                <tr>
+                  <th colspan="4" style="text-align:center">收货人信息</th>
+                </tr>
+                <tr>
+                  <td><div align="right"><strong>收货人：</strong></div></td>
+                  <td>{$re.username}</td>
+                  <td><div align="right"><strong>联系电话：</strong></div></td>
+                  <td>{$re.phone}</td>
+                </tr>
+                <tr>
+
+                  <td><div align="right"><strong>地址：</strong></div></td>
+                  <td colspan="3">{$re.addr}</td>
+                </tr>
+
+
+              </table>
+
+              <table width="100%" cellpadding="3" cellspacing="1" class="table table-bordered table-hover">
+                <tr>
+                  <th colspan="10" scope="col" style="text-align:center">商品信息</th>
+                </tr>
+                <tr>
+                  <td scope="col" width="30%"><div align="center"><strong>商品名称</strong></div></td>
+
+                  <td scope="col"><div align="center"><strong>货号</strong></div></td>
+
+                  <td scope="col"><div align="center"><strong>价格</strong></div></td>
+
+                  <td scope="col"><div align="center"><strong>数量</strong></div></td>
+
+                  <td scope="col"><div align="center"><strong>库存</strong></div></td>
+                  <td scope="col"><div align="center"><strong>小计</strong></div></td>
+                </tr>
+                {volist name="list" id="v"}
+                <tr>
+                  <td>
+                    {$v.gname}
+                  </td>
+                  <td><div align="right">{$v.gcode}</div></td>
+                  <td><div align="right">{$v.price}</div></td>
+                  <td><div align="right">{$v.num}</div></td>
+                  <td><div align="right">{$v.kc}</div></td>
+
+                  <td><div align="right">¥{$v.zprice}</div></td>
+                </tr>
+                {/volist}
+                <tr>
+                  <td></td>
+                  <td>&nbsp;</td>
+                  <td>&nbsp;</td>
+                  <td>&nbsp;</td>
+
+
+                  <td><div align="right"><strong>合计：</strong></div></td>
+                  <td><div align="right">¥{$re.zprice}</div></td>
+                </tr>
+              </table>
+
+            {if condition="$re.status eq 2"}
+              <table cellpadding="3" cellspacing="1"  class="table table-bordered table-hover">
+                <tr>
+                  <th colspan="6" style="text-align:center">操作信息</th>
+                </tr>
+                <tr>
+                  <td><div align="right"><strong>运费：</strong></div></td>
+                  <td colspan="5"><input type="number" min="0" placeholder="请输入运费" {if condition="$re.fare neq 0"} value="{$re.fare}" {/if} name="fare"  style="color:#00F" class="submitinput">
+                   {if condition="$re.fare eq 0"} <input id="to_fare" type="submit" style="color:#3e17ff" value="确定" class="button" />{/if} </td>
+
+                </tr>
+                <tr>
+                  <td><div align="right"></div>
+                    <div align="right"><strong>当前可执行操作：</strong> </div></td>
+
+                  <td colspan="2">
+
+                    <select name="express"><option value="0">请选择快递</option>
+                      {volist name="express" id="v"}
+                      <option value="{$v.id}" >{$v.express_name}</option>
+                      {/volist}
+                    </select>
+                    <input type="text" placeholder="请输入快递单号"   name="number"  style="color:#00F" class="submitinputs">
+                    <input id="to_express" type="submit" style="color:#F00" value="一键发货" class="button" />
+                    <!--  -->
+                  </td>
+
+                </tr>
+
+              </table>
+
+             {/if}
+
+              {if condition="$re.status eq 3"}
+              <table cellpadding="3" cellspacing="1"  class="table table-bordered table-hover">
+                <tr>
+                  <th colspan="6" style="text-align:center">操作信息</th>
+                </tr>
+                <tr>
+                  <td><div align="right"><strong>运费：</strong></div></td>
+                  <td colspan="5"><input type="number" min="0" placeholder="请输入运费" readonly {if condition="$re.fare neq 0"} value="{$re.fare}" {/if} name="fare"  style="color:#00F" id="express" class="submitinput">
+
+                    <input id="update" type="submit" style="color:#ff4b2c" value="修改" class="button" />
+
+
+                    <input id="to_fares" type="submit" style="color:#3e17ff;display: none;" value="确定" class="button" />
+
+                  </td>
+
+                </tr>
+                <tr>
+                  <td><div align="right"></div>
+                    <div align="right"><strong>当前可执行操作：</strong> </div></td>
+
+                  <td colspan="2">
+
+                    <select name="express" id="express_ad" disabled="disabled" ><option value="0">请选择快递</option>
+                      {volist name="express" id="v"}
+                      <option value="{$v.id}" {if condition="$re.express eq $v['express_name']"} selected {/if} >{$v.express_name}</option>
+                      {/volist}
+                    </select>
+                    <input type="text" placeholder="请输入快递单号" readonly value="{$re.number}" id="number"  name="number"  style="color:#00F" class="submitinputs">
+
+                    <input id="updates" type="submit" style="color:#ff4b2c" value="修改" class="button" />
+
+                    <input id="to" type="submit" style="color:#F00;display: none;" value="确定" class="button" />
+
+                    <!--  -->
+                  </td>
+
+                </tr>
+
+                <tr>
+                  <td><div align="right"><strong>发货时间：</strong></div></td>
+                  <td colspan="5">{$re.fa_time|date="Y-m-d H:i:s",###}</td>
+
+                </tr>
+
+              </table>
+
+
+
+              {/if}
+
+<script>
+  $("#updates").click(function () {
+
+    var updates=$("#updates").val();
+
+    if(updates == "修改"){
+      $("#express_ad").removeAttr("disabled");
+      $("#number").removeAttr("readonly");
+      $("#to").css("display","inline-block");
+      $("#updates").val("取消");
+    }else{
+      $("#express_ad").attr({ disabled: 'true' });
+      $("#number").attr({ readonly: 'true' });
+      $("#to").css("display","none");
+      $("#updates").val("修改");
+    }
+
+
+  })
+
+  $("#update").click(function () {
+
+    var update=$("#update").val();
+
+    if(update == "修改"){
+      $("#express").removeAttr("readonly");
+      $("#to_fares").css("display","inline-block");
+      $("#update").val("取消");
+    }else{
+      $("#express").attr({ readonly: 'true' });
+      $("#to_fares").css("display","none");
+      $("#update").val("修改");
+    }
+
+
+  })
+
+  $("#to_fares").click(function () {
+
+    var fare = $("input[name=fare]").val();
+
+    if(fare <= 0){
+      layer.alert("请输入正确的运费金额，必须大于0");return false;
+    }
+    var did ="{$re.did}";
+
+    $.ajax({
+      type:"post",
+      url:"{:url('Dd/fares')}",
+      datatype:"text",
+      data:{did:did,fare:fare},
+      success:function (re) {
+        if(re == 1){
+          layer.alert("操作成功");
+
+          $("#express").val(fare);
+        }else if(re == 3) {
+          layer.alert("此运费订单已支付，不能修改", {icon: 5}, function(index) {
+            layer.close(index);
+
+            location.reload();
+          })
+        }else{
+            layer.alert("系统繁忙，请稍后再试", {icon: 5}, function(index) {
+              layer.close(index);
+
+              location.reload();
+            })
+          }
+        }
+
+    })
+
+  })
+
+</script>
+
+<script>
+
+  $("#to_fare").click(function () {
+
+    var fare = $("input[name=fare]").val();
+
+    if(fare <= 0){
+      layer.alert("请输入正确的运费金额，必须大于0");return false;
+    }
+    var did ="{$re.did}";
+    
+    $.ajax({
+      type:"post",
+      url:"{:url('Dd/fare')}",
+      datatype:"text",
+      data:{did:did,fare:fare},
+      success:function (re) {
+         if(re == 1){
+           layer.alert("操作成功");
+
+           $(".submitinput").val(fare);
+         }else{
+           layer.alert("系统繁忙，请稍后再试", {icon: 5}, function(index) {
+             layer.close(index);
+
+             location.reload();
+           })
+         }
+      }
+    })
+
+  })
+
+  $("#to_express").click(function () {
+
+        var express = $("select[name=express]").val(),
+                did ="{$re.did}",
+            number = $("input[name=number]").val();
+
+        if(express == 0){
+          layer.alert("请选择快递公司");return false;
+        }
+
+        if($.trim(number) == ''){
+          layer.alert("请输入快递单号");return false;
+        }
+
+        $.ajax({
+          type:"post",
+          url:"{:url('Dd/to_express')}",
+          datatype:"text",
+          data:{did:did,express:express,number:number},
+          success:function (re) {
+            if(re == 1){
+
+
+              layer.alert("操作成功", {icon: 6}, function(index) {
+                layer.close(index);
+
+                location.reload();
+
+              })
+            }else{
+              layer.alert("系统繁忙，请稍后再试", {icon: 5}, function(index) {
+                layer.close(index);
+
+                location.reload();
+
+              })
+
+            }
+          }
+        })
+
+
+  })
+
+  $("#to").click(function () {
+
+    var express = $("select[name=express]").val(),
+            did ="{$re.did}",
+            number = $("input[name=number]").val();
+
+    if(express == 0){
+      layer.alert("请选择快递公司");return false;
+    }
+
+    if($.trim(number) == ''){
+      layer.alert("请输入快递单号");return false;
+    }
+
+    $.ajax({
+      type:"post",
+      url:"{:url('Dd/to_expresss')}",
+      datatype:"text",
+      data:{did:did,express:express,number:number},
+      success:function (re) {
+        if(re == 1){
+          layer.alert("操作成功", {icon: 6}, function(index) {
+            layer.close(index);
+
+            location.reload();
+
+          })
+        }else{
+          layer.alert("系统繁忙，请稍后再试", {icon: 5}, function(index) {
+            layer.close(index);
+
+            location.reload();
+
+          })
+
+        }
+      }
+    })
+
+
+  })
+
+</script>
+
+<!--              <table class="table table-bordered table-hover">-->
+<!--                <thead>-->
+
+<!--                <tr>-->
+<!--                  <th colspan="4">基本信息</th>-->
+<!--                </tr>-->
+
+<!--                <tr>-->
+<!--                 -->
+<!--                  <th>ID</th>-->
+<!--                  <th>订单号码</th>-->
+<!--                  <th>商品名称</th>-->
+<!--                  <th>商品货号</th>-->
+<!--                  <th>商品单价</th>-->
+<!--                  <th>商品数量</th>-->
+<!--                  <th>商品总价</th>-->
+<!--                  <th>下单时间</th>-->
+<!--                  <th>收货信息</th>-->
+<!--                </tr>-->
+<!--                </thead>-->
+<!--                <tbody>-->
+<!--                {volist name="list" id="v"}-->
+<!--                <tr class="ace-thumbnails">-->
+<!--                  <td><span class="badge badge-grey">{$v.did}</span></td>-->
+<!--                  <td>{$v.code}</td>-->
+<!--                  <td>{$v.gname}</td>-->
+<!--                  <td>{$v.gcode}</td>-->
+<!--                  <td>{$v.price}</td>-->
+<!--                  <td>{$v.num}</td>-->
+<!--                  <td>{$v.zprice}</td>-->
+<!--                  <td>{$v.time|date="Y-m-d H:i:s",###}</td>-->
+<!--                  <th>-->
+<!--                                                         收货人姓名：{$v.username}<br>-->
+<!--                                                         收货人电话：{$v.phone}<br>-->
+<!--                                                         收货人地址：{$v.addr}<br>-->
+<!--                  </th>-->
+<!--                </tr>-->
+<!--                {/volist}-->
+<!--                {empty name="list"}<tr><td colspan="18" class="text-center">暂无数据</td></tr>{/empty}-->
+<!--                </tbody>-->
+<!--              </table>-->
+             
+            </div>
+          </div><!-- /.col -->
+        </div><!-- /.row -->
+      </div><!-- /.page-content -->
+    </div>
+  </div><!-- /.main-content -->
+
+{include file="public:footer"}
+
+<a href="#" id="btn-scroll-up" class="btn-scroll-up btn btn-sm btn-inverse">
+  <i class="ace-icon fa fa-angle-double-up icon-only bigger-110"></i>
+</a>
+</div><!-- /.main-container -->
+
+<script>
+  jQuery(function($) {
+	  
+	  $('.input-daterange').datepicker({
+		  autoclose:true,
+		  language:"zh-CN",
+          format:"yyyy-mm-dd"
+          });
+	  
+    $('[data-rel=tooltip]').tooltip();
+
+    $( "#hide-option" ).tooltip({
+      hide: {
+        effect: "explode",
+        delay: 250
+      }
+    });
+
+  })
+</script>
+
+<script type="text/javascript">
+		function dels(id){
+			layer.confirm('你确定删除吗？', {icon: 3}, function(index){
+		    layer.close(index);
+		    window.location.href="__URL__/delete/id/"+id;
+		  });
+	    }
+		</script>
+<script>
+function changes(id){
+	$.ajax({
+		type:"post",
+		url:"__URL__/changes",
+	    data:{id:id},
+	    datatype:"text",
+	    success:function(){
+	    	
+	    }
+	})
+}
+function changeu(id){
+	$.ajax({
+		type:"post",
+		url:"__URL__/changeu",
+	    data:{id:id},
+	    datatype:"text",
+	    success:function(){
+	    	
+	    }
+	})
+}
+function changea(id){
+	$.ajax({
+		type:"post",
+		url:"__URL__/changea",
+	    data:{id:id},
+	    datatype:"text",
+	    success:function(){
+	    	
+	    }
+	})
+}
+function changel(id){
+	$.ajax({
+		type:"post",
+		url:"__URL__/changel",
+	    data:{id:id},
+	    datatype:"text",
+	    success:function(){
+	    	
+	    }
+	})
+}
+function changess(id){
+	$.ajax({
+		type:"post",
+		url:"__URL__/changess",
+	    data:{id:id},
+	    datatype:"text",
+	    success:function(){
+	    	
+	    }
+	})
+}
+function changeh(id){
+	$.ajax({
+		type:"post",
+		url:"__URL__/changeh",
+	    data:{id:id},
+	    datatype:"text",
+	    success:function(){
+	    	
+	    }
+	})
+}
+</script>
+
+
+  <script>
+  $("#change").click(function(){
+  	$("#sortForm").submit();
+  })
+
+  </script>
+</body>
+</html>

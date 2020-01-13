@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{include file="public:header"}
+
+<body class="">
+
+		<div class="back_box">
+				
+				<ul class="bread">
+						<li>
+						 <a href="{:url('Index/index')}">首页</a>&nbsp;&gt;
+						</li>
+						<li>
+						 <a href="{:url('News/index')}">资讯中心</a>&nbsp;&gt;
+						</li>
+						<li>
+						<a href="javascript:;">资讯详情</a>
+						</li>
+					   </ul>			
+			</div>
+
+	<!-- 公共顶部 -->
+{include file="public:top"}
+
+	<!-- banner -->
+	<!-- <div data-am-widget="slider" class="am-slider am-slider-a1" data-am-slider='{&quot;directionNav&quot;:false}'>
+		<ul class="am-slides">
+			<li class="travel_item" style="background-image: url(__HOME__/img/banner.png);background-size: cover;background-position: center;"></li>
+			<li class="travel_item" style="background-image: url(__HOME__/img/banner.png);background-size: cover;background-position: center;"></li>
+			<li class="travel_item" style="background-image: url(__HOME__/img/banner.png);background-size: cover;background-position: center;"></li>
+		</ul>
+	</div> -->
+
+	<div class="p_12">
+		<h3 class="am-text-lg mar_btm_12 font_bold">{$re.title}</h3>
+		<div class="flex_between">
+			<div class="pic_scan am-text-xs">{$re.browse}</div>
+			<div class="flex_normal">
+				<!-- <img class="bd_radius_50 mar_rt_6" src="__HOME__/img/common_pic.jpg" width="20" height="20" alt=""> -->
+				<!-- <span class="am-text-xs">{$re.writer}</span> -->
+				<span class="am-text-xs" style="margin-right: 15px;">文章来源: {$re.source}</span>
+				<span class="am-text-xs">作者: {$re.writer}</span>
+			</div>
+		</div>
+		<div class="detail_box">
+			{$re.content}
+		</div>
+	</div>
+
+</body>
+
+</html>

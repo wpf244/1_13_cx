@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{include file="public:header"}
+
+<body class="pad_btm">
+
+		<div class="back_box">
+				
+				<ul class="bread">
+						<li>
+						 <a href="{:url('Index/index')}">首页</a>&nbsp;&gt;
+						</li>
+						<li>
+						 <a href="javascript:;">资讯中心</a>
+						</li>
+						
+					   </ul>
+			</div>
+
+	<!-- 公共顶部 -->
+{include file="public:top"}
+	
+<div data-am-widget="slider" class="am-slider am-slider-a1" data-am-slider='{&quot;directionNav&quot;:false}'>
+	<ul class="am-slides">
+	 {volist name="lb" id="vb"}	
+		<li>
+				<a {if condition="$vb.url neq '' "} href="{$vb.url}" {/if} >
+			<div style="height: 150px;background-image: url({$vb.image});background-size: cover;background-repeat: no-repeat;background-position: center;"></div>
+		</a>
+			<!-- <img src="{$vb.image}"> -->
+			</li>
+	{/volist}
+	</ul>
+</div>
+
+	<!-- 热门资讯 -->
+	<a href="javascript:;" class="flex_between p_12 bg_white">
+		<div class="title_left am-text-lg">
+			热门资讯
+		</div>
+	</a>
+
+	<div class="p_6">
+		<div class="am-g">
+			{volist name="res" id="v"}
+
+			<div class="am-u-sm-6">
+				<div class="box_shadow bg_white bd_radius mar_btm_12">
+	<a href="{:url('News/detail',array('id'=>$v['id']))}" class="am-block pic_big bg_cover" style="background-image: url({$v.image});"></a>
+	<div class="p_12">
+		<h3 class="pic_title  mar_btm_6"><a href="{:url('News/detail',array('id'=>$v['id']))}">{$v.title}</a></h3>
+		<div class="flex_between">
+			<div class="flex_normal">
+				<!-- <img class="bd_radius_50 mar_rt_6" src="__HOME__/img/common_pic.jpg" width="20" height="20" alt=""> -->
+				<span class="am-text-xs">{$v.writer}</span>
+			</div>
+			<div class="pic_scan am-text-xs">{$v.browse}</div>
+		</div>
+	</div>
+</div>
+						
+			</div>
+
+			{/volist}
+			
+		</div>
+	</div>
+
+	<!-- 底部导航 -->
+{include file="public:footer"}
+
+</body>
+
+</html>

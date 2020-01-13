@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{include file="public:header"}
+
+<body class="" style="padding-bottom: 60px;">
+
+	<!-- 返回 -->
+	<div class="back_box">
+		
+		<ul class="bread">
+				<li>
+				 <a href="{:url('Index/index')}">首页</a>&nbsp;&gt;
+				</li>
+
+				<li>
+				<a href="javascript:;">商品详情</a>
+				</li>
+			   </ul>	
+	</div>
+
+	<!-- banner -->
+	<div data-am-widget="slider" class="am-slider am-slider-a1" data-am-slider='{&quot;directionNav&quot;:false}'>
+		<ul class="am-slides">
+		  {volist name="img" id="i"}	
+			<li><img src="{$i.image}" style="height: 414px;"></li>
+			{/volist}
+			<li><img src="{$re.image}" style="height: 414px;"></li>
+		</ul>
+	</div>
+
+	<div class="p_12 bd_btm">
+		<h5 class="flex_1 am-text-truncate mar_btm_6">
+			{$re.name} &nbsp;&nbsp;{$re.code} ({$re.type})
+		</h5>
+		<div class="flex_between">
+			<div class="col_main">￥{$re.xprice}</div>
+			<span {if condition="$collect eq 0"} class="goods_collect mar_lt_12" {else /} class="goods_collect mar_lt_12 active" {/if} >
+
+			</span>
+
+		</div>
+			<div class="flex_between col_nine  mar_btm_6"><span></span><span>收藏</span></div>
+		<div class="flex_between col_nine  mar_btm_6">
+			<span>库存:{$re.kc}</span><span>销量:{$re.sales}</span>
+		</div>
+		<div class="flex_normal">
+			包装规格：<span >{$re.specs}</span>
+		</div>
+	</div>
+
+	<div class="am-g bd_btm_10 pd_12  col_nine">
+		{volist name="lb" id="l"}
+		<div class="am-u-sm-4">
+			<img class="am-center mar_btm_12" src="{$l.image}" width="24" height="24" alt="">
+			<h6 class="am-text-center">{$l.name}</h6>
+		</div>
+		{/volist}
+	</div>
+
+	<!-- 详情和评价选项卡 -->
+	<ul class="order_hd flex_around bd_btm">
+		<li class="order_item active tab_item">商品详情</li>
+<!--		<li class="order_item tab_item">销量评价</li>-->
+	</ul>
+
+	<div class="tab_wrap">
+		<div class="tab_cont active">
+			<!-- 商品详情盒子 -->
+			<div class="goods_detail">
+				{$re.content}
+			</div>
+		</div>
+		<div class="tab_cont">
+			<div class="p_12">
+
+				<ul class="assess_list">
+
+				</ul>
+			</div>
+		</div>
+	</div>
+
+	<!-- 底部加入购物车及立即购买 -->
+	<div class="function_box">
+		<div class="function_lt">
+
+			<a href="{:url('Shop/index')}" class="function_cell">
+				<img class="function_icon" src="__HOME__/img/icon_mall_cart.png" width="20" height="20" alt=""><h6>进货单</h6>
+				<span class="function_tag">{$car}</span>
+			</a>
+		</div>
+		<a href="javascript:;" style="width: 70%;" class="function_btn warning">加入进货单</a>
+
+	</div>
+
+	<!-- 加入购物车及立即购买弹窗 -->
+	<div class="common_bg" id="gou_bg"></div>
+	
+
+	 <div class="hotel_tan bg_white" id="hotel_tan">
+
+		<form action="#" class="p_12">
+			<div class="flex_normal pd_12 bd_btm mar_btm_12">
+				<div class="hotel_piao square mar_rt_12 bg_cover bd_all" style="background-image:url({$re.image});"></div>
+				<div class="flex_1">
+					<div class="hotel_wrap">
+						<h3 class="am-text-truncate">{$re.name} &nbsp;&nbsp;{$re.code} ({$re.type})</h3>
+						<div class="flex_between">
+                            <p>  包装规格：{$re.specs}</p>
+						{notempty name="$spec"}	<div class="col_main mar_rt_6 am-text-lg">￥<span class="price">{$spec[0]['s_xprice']}</span></div> {else /}
+						<div class="col_main mar_rt_6 am-text-lg">￥{$re.xprice}</div>
+						{/notempty}
+						</div>
+					</div>
+				</div>
+			</div>
+			{notempty name="$spec"}
+			<div class="mar_btm_12 bd_btm">
+				<h6 class="mar_btm_12">规格</h6>
+				<ul class="flex_normal flex_wrap ">
+					<!-- <li class="feed_item active">15g</li> -->
+					{volist name="spec" id="vs" key="ks"}
+				<li {if condition="$ks eq 1"} class="feed_item active" {else /} class="feed_item" {/if} data-id="{$vs.sid}" >{$vs.s_name}</li>
+
+					{/volist}
+				</ul>
+			</div>
+			{/notempty}
+
+			<div class="flex_between">
+				<h6>购买数量</h6>
+				<div class="num_form flex_between">
+	<a href="javascript:;" class="num_minus">-</a>
+	<input type="number" name="" id="num" value="1" oninput="if(value.length>3)value=value.slice(0,5)"  class="num_ipt" />
+	<a href="javascript:;" class="num_plus">+</a>
+</div>
+			</div>			
+
+		</form>
+
+		<div class="flex_normal">
+<!--			<a href="javascript:;" class="function_btn warning full" id="car">加入购物车</a>-->
+			<a href="javascript:;" class="function_btn danger full" style="width: 100%;" id="car">确定</a>
+		</div>
+
+		<img class="hotel_close" id="hotel_close" src="__HOME__/img/icon_tan_close.png" width="20" height="20" alt="">
+
+	</div> 
+
+	<script>
+		
+	$(function () {
+		//商品数量加减
+		var $plus = $('.num_plus'),
+			$reduce = $('.num_minus'),
+			$all_sum = $('.num_ipt');
+            
+		$plus.click(function () {
+			var $inputVal = $(this).prev('input'),
+				$count = parseInt($inputVal.val()) + 1,
+				$obj = $(this).parents('.num_form').find('.num_minus');
+			$inputVal.val($count);
+
+
+		})
+
+		$reduce.click(function () {
+			var $inputVal = $(this).next('input'),
+				$count = parseInt($inputVal.val()) - 1;
+			if ($inputVal.val() <= 1) {
+				return;
+			}
+			$inputVal.val($count);
+		
+
+		})
+	})
+</script>
+
+	<script>
+
+		$(function () {
+
+			var id = "{$re.id}";
+			// 收藏
+			$('.goods_collect').click(function () {
+
+			
+
+				$.ajax({
+					type:"post",
+					url:"{:url('Index/collect')}",
+					data:{id:id},
+					dataType:"text",
+					success:function(re){
+                       if(re == 1){
+						   layer.msg("请先登录");
+						   location.href="{:url('Login/login')}"
+					   }
+					}
+							
+					})
+
+				$(this).toggleClass(function () {
+					if ($(this).hasClass('active')) {
+
+					   
+						console.log('取消收藏')
+					} else {
+						console.log('收藏成功')
+					}
+					return 'active'
+				})
+			})
+
+			// 评价星星
+			$('.starList').each(function(){
+				var starNum = 5;
+				var _this = $(this);
+				var starLight = _this.data('star');
+				for(let i = 0;i < starNum; i++) {
+					_this.append('<li></li>');
+					if (i < starLight) {
+					_this.find('li').addClass('active');
+					}
+				}
+			})
+
+			// 评价条数
+			let len = $('.assess_item').length
+			$('.assess_num').text(len)
+			if(len === 0) {
+				$('.assess_list').replaceWith('<div class="no_data">暂无评价~</div>')
+			}
+
+			// 立即抢购及加入购物车弹窗
+			$('.function_btn').click(function () {
+				$('#hotel_tan').slideDown()
+				$('#gou_bg').fadeIn()
+			})
+
+			$('#gou_bg').click(function () {
+				$(this).fadeOut()
+				$('#hotel_tan').slideUp()
+			})
+
+			$('#hotel_close').click(function () {
+				$('#gou_bg').fadeOut()
+				$('#hotel_tan').slideUp()
+			})
+
+			var sid = 0;
+			
+			// 种类切换
+			$('.feed_item').click(function () {
+				switchClas($(this), 'active')
+
+				sid = $(this).data("id");
+
+				$.ajax({
+					type:"post",
+					url:"{:url('Index/get_spec')}",
+					data:{sid:sid},
+					dataType:"text",
+					success:function(re){
+                        if(re == 0){
+							layer.msg("系统繁忙");
+							location.reload();
+						}else{
+							
+							var data = JSON.parse(re);
+
+                            $(".price").html(data.s_xprice)
+						}
+					}
+				})
+			})
+
+			$("#car").click(function(){
+				var num = $("#num").val();
+				if(!sid){
+
+					sid=$('.feed_item').data('id');
+
+					if(!sid){
+						sid = 0;
+					}
+				}
+				if(num < 1){
+					layer.msg("请输入正确的数量"); return false;
+				}
+				var kc = "{$re.kc}",
+				 kc = parseInt(kc);
+
+				if(num > kc){
+					// console.log(num,kc)
+					layer.msg("库存不足"); return false;
+				}
+
+				$.ajax({
+					type:"post",
+					url:"{:url('Index/join_car')}",
+					data:{sid:sid,num:num,gid:id},
+					dataType:"text",
+					success:function(re){
+                        if(re == 1){
+							layer.msg("请先登录");
+							location.href="{:url('Login/login')}";
+						}else if(re == 2){
+							layer.msg("系统繁忙,请稍后再试");
+							location.href="{:url('Index/index')}";
+						}else{
+							layer.msg("添加成功");
+							setTimeout("location.reload()",2000);
+						}
+					} 
+				})
+				
+			})
+
+			$("#buy").click(function(){
+				var num = $("#num").val();
+				if(!sid){
+
+					sid=$('.feed_item').data('id');
+
+					if(!sid){
+						sid = 0;
+					}
+				}
+
+				$.ajax({
+					type:"post",
+					url:"{:url('Goods/join_buy')}",
+					data:{sid:sid,num:num,gid:id},
+					dataType:"text",
+					success:function(re){
+                        if(re == 0){
+							layer.msg("请先登录");
+							location.href="{:url('Login/login')}";
+						}else if(re == -1){
+							layer.msg("系统繁忙,请稍后再试");
+							location.href="{:url('Goods/index')}";
+						}else{
+							location.href="{:url('Goods/buy')}?did="+re;
+						}
+					} 
+				})
+				
+			})
+
+
+
+			
+
+
+		})
+	</script>
+
+</body>
+
+</html>

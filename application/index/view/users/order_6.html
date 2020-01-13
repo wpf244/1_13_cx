@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{include file="public:header"}
+
+<body class="">
+
+	<!-- 返回 -->
+	<div class="back_box">
+			<ul class="bread">
+					<li>
+					 <a href="{:url('Index/index')}">首页</a>&nbsp;&gt;
+					</li>
+					<li>
+					 <a href="{:url('Users/indexs')}">个人中心</a>&nbsp;&gt;
+					</li>
+					<li>
+					<a href="javascript:;">已完成订单</a>
+					</li>
+				   </ul>
+	</div>
+
+	<div class="order_menu">
+			<a href="order_1.html" class="order_single">待付款</a>
+			<a href="order_2.html" class="order_single">待发货</a>
+			<a href="order_3.html" class="order_single">待收货</a>
+<!--			<a href="order_4.html" class="order_single">待评价</a>-->
+			<a href="javascript:;" class="order_single active">已完成</a>
+<!--			<a href="order_5.html" class="order_single">退款/售后</a>-->
+		</div>
+
+	<ul class="order_list">
+	  {volist name="res" id="v"}	
+		<li class="order_danyuan bd_btm_10">
+			<div class="flex_between p_12">
+				<h6>订单号：{$v.code}</h6><span class="col_main ">已完成</span>
+			</div>
+		  {volist name="$v['list']" id="p"}	
+			<div class="order_goods">
+	<img class="mar_rt_12" src="{$p.simage}" width="90" height="90" alt="">
+	<div class="flex_1">
+		<div class="order_wrap">
+			<div class="flex_1">
+				<div class="flex_between">
+					<h5 class="am-text-truncate">{$p.gname}</h5>
+					<span class="mar_lt_12">￥{$p.price}</span>
+				</div>
+				<div class="order_desc  col_nine">
+					<h6>{$p.gcode}</h6>
+					
+				</div>
+			</div>
+			<div class="am-text-right col_nine ">X{$p.num}</div>
+		</div>
+	</div>
+</div>
+		{/volist}	
+			<div class="p_12 bd_btm am-text-right">
+				{if condition="$v.collection eq 1"}<div style="float: left;">代收：<span class="col_main am-text-lg">￥{$v.collection_money}</span></div>{/if}
+
+				合计：<span class="col_main am-text-lg">￥{$v.zprice}</span>
+			</div>
+			<div class="p_12 am-text-right">
+					
+					 <a href="{:url('Users/dd_detail',array('did'=>$v['did']))}" class="order_cancle am-btn am-btn-xs am-round am-btn-default">订单详情</a>
+				</div>
+		</li>
+		{/volist}
+	</ul>
+
+	<div class="no_data">暂无更多订单~</div>
+
+	<script>
+			function dels(id){
+				layer.confirm('你确定收货吗？', {icon: 3}, function(index){
+					layer.close(index);
+					$.ajax({
+						type:"post",
+						url:"{:url('Users/change_dd')}",
+						data:{id:id},
+						datatype:"text",
+						success:function(re){
+							if(re == 0){
+								location.reload();
+							}else{
+								layer.msg("系统繁忙请稍后再试");location.reload();
+							}
+						}
+					})
+				});
+			}
+	</script>
+
+</body>
+
+</html>

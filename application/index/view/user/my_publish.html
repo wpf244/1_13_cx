@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{include file="public:header"}
+
+<body class="">
+
+		<div class="back_box">
+				
+				<ul class="bread">
+						<li>
+						 <a href="{:url('Index/index')}">首页</a>&nbsp;&gt;
+						</li>
+						<li>
+						 <a href="{:url('User/index')}">个人中心</a>&nbsp;&gt;
+						</li>
+						<li>
+						<a href="javascript:;">我的发布</a>
+						</li>
+					   </ul>		
+			</div>
+
+	<!-- 公共顶部 -->
+{include file="public:top"}
+
+	<div class="p_6">
+		<div class="am-g">
+
+
+
+				{volist name="res" id="v" }
+				<div class="am-u-sm-6">
+				
+				 
+					<div class="box_shadow bg_white bd_radius mar_btm_12">
+						<a href="{:url('Culture/detail_publish',array('id'=>$v['id']))}" class="am-block pic_big bg_cover" style="background-image: url({$v.image});"></a>
+						<div class="p_12" style="padding-bottom: 4px;">
+							<h3 class="pic_title  mar_btm_6"><a href="{:url('Culture/detail_publish',array('id'=>$v['id']))}">{$v.title}</a></h3>
+							<div class="flex_between">
+								<div class="flex_normal">
+									<img class="bd_radius_50 mar_rt_6" src="{$v.photo}" width="20" height="20" alt="">
+									<span class="am-text-xs">{$v.nickname}</span>
+								</div>
+								<div class="pic_scan am-text-xs">{$v.looks}</div>
+							</div>
+						</div>
+						<div style="display: flex;justify-content: space-around;padding: 4px;">
+							<a style="display: inline-block;background-color: #fff;color:#505050;border-radius: 5px;text-align: center;padding: 4px 10px;border: 1px solid #E2E2E2;" href="{:url('User/update_publish',array('id'=>$v['id']))}">编辑</a>
+							<a style="display: inline-block;background-color: #EB4949;color:#fff;border-radius: 5px;text-align: center;padding: 4px 10px;" onclick="dels({$v.id})">删除</a>
+						</div>
+					</div>
+				
+			
+				
+				</div>
+				{/volist}
+		
+		</div>
+	</div>
+
+	<div class="no_data">没有发布更多内容~</div>
+	<script type="text/javascript">
+		function dels(id){
+			layer.confirm('你确定删除吗？', {icon: 3}, function(index){
+		    layer.close(index);
+		    $.ajax({
+				type:"post",
+				url:"__URL__/delete_publish",
+				data:{id:id},
+				datatype:"text",
+				success:function(re){
+					if(re == 0){
+					layer.msg("操作成功");
+					setTimeout('location.reload()',2000)
+					}else{
+					layer.msg("操作失败");
+					setTimeout('location.reload()',2000)
+					}
+				}
+			})
+		  });
+	    }
+		</script>
+</body>
+
+</html>

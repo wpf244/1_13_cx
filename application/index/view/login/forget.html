@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{include file="public:header"}
+
+<body class="">
+		<div class="back_box">
+				<ul class="bread">
+						<li>
+						 <a href="{:url('Index/index')}">首页</a>&nbsp;&gt;
+						</li>
+						<li>
+						 <a href="{:url('Login/login')}">登录中心</a>&nbsp;&gt;
+						</li>
+						<li>
+								<a href="javascript:;">忘记密码</a>
+							   </li>
+					
+					   </ul>		
+			</div>
+	<div class="p_12">
+		<form class="am-block" id="logoForm" action="{:url('Login/usave')}" method="POST">
+			<div class="form_group">
+				<input type="number"  class="am-block" name="phone"  placeholder="请输入手机号" required>
+			</div>
+			<div class="form_group flex_between">
+				<input type="number" class="" placeholder="输入手机验证码" name="code" required>
+				<input class="col_main am-text-center travel_msg " value="发送验证码" readonly id="code" />
+			</div>
+			<div class="form_group">
+				<input type="password" class="am-block" name="pwd" placeholder="设置新的登录密码" required>
+			</div>
+			<div class="form_group">
+				<input type="password" class="am-block" name="pwd1" placeholder="再次输入密码" required>
+			</div>
+			<div class="pd_12">
+				<button type="submit" class="confirm_btn" >完成</button>
+			</div>
+		</form>
+	</div>
+
+	<script>
+			$(function () {
+				$('#logoForm').ajaxForm({
+					beforeSubmit: checkForm, // 此方法主要是提交前执行的方法，根据需要设置
+					success: complete, // 这是提交后的方法
+					dataType: 'json'
+				});
+	
+				function checkForm() {
+					 var code = $('input[name=code]').val();
+					 
+					 if(code.length != 6){
+						 layer.msg("请输入正确的手机验证码");return false;
+					 }
+
+					var pwd1 = $('input[name=pwd]').val(),
+					pwd2 = $('input[name=pwd1]').val()
+					if (pwd1 != pwd2) {
+						layer.msg('两次输入密码不一致')
+						$('input[name=pwd1]').val('').focus()
+						return false
+					}
+
+
+	
+				}
+	
+				function complete(data) {
+					if (data.code == 1) {
+						// layer.alert(data.msg, {
+						// 	icon: 6
+						// }, function (index) {
+						// 	layer.close(index);
+						// 	window.location.href = data.url;
+						// });
+
+						layer.msg(data.msg);
+
+						setTimeout("location.href="+'"'+data.url+'"',2000);
+
+	
+					} else {
+						// layer.alert(data.msg, {
+						// 	icon: 5
+						// }, function (index) {
+						// 	layer.close(index);
+						// 	window.location.href = data.url;
+						// });
+						layer.msg(data.msg);return false;
+	
+					}
+				}
+	
+			});
+		</script>
+
+	<script>
+		//发送验证码倒计时
+		var countdown = 60;
+
+		$("#code").click(function(){
+			var phone = $('input[name=phone]').val();
+
+			var phone_reg = /^[1][3,4,5,6,7,8,9][0-9]{9}$/;
+			
+			if (!phone_reg.test(phone)) {
+				layer.msg("请输入正确的手机号码");
+				return false;
+			}
+			
+			$.ajax({
+				type:"post",
+				url:"{:url('Login/send_codes')}",
+				data:{phone:phone},
+				dataType:"text",
+				success:function(re){
+                    if(re == 1){
+					   
+						settime();
+						
+					}else{
+						layer.msg("此手机号码未注册");return false;
+					}
+				}
+
+			})
+
+		})
+
+		function settime(obj) {
+
+			var obj = $("#code");
+		  
+			if (countdown == 0) {
+				obj.attr("disabled");
+				obj.val("获取验证码");
+				countdown = 60;
+				return;
+			} else {
+				obj.attr("disabled", true);
+				obj.val("重新发送(" + countdown + ")");
+				countdown--;
+			}
+					 
+			
+			setTimeout(function () {
+							settime(obj)
+						}, 1000)
+			
+		}
+		
+	</script>
+
+</body>
+
+</html>

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{include file="public:header"}
+
+<body class="">
+
+	<!-- 返回 -->
+	<div class="back_box">
+		
+		<ul class="bread">
+				<li>
+				 <a href="{:url('Index/index')}">首页</a>&nbsp;&gt;
+				</li>
+				<li>
+				 <a href="{:url('Car/index')}">汽车租赁</a>&nbsp;&gt;
+				</li>
+				<li>
+				<a href="javascript:;">汽车租赁详情</a>
+				</li>
+			   </ul>	
+	</div>
+
+	<!-- 公共顶部 -->
+{include file="public:top"}
+
+	<div class="scenic_box">
+		<div class="scenic_banner bg_cover" style="background-image:url({$re.image});">
+		</div>
+
+		<div class="bd_btm_10">
+			<div class="p_12">
+				<div class="scenic_intro flex_between mar_btm_6">
+					<h4>某某某车行</h4>
+					<div class="flex_normal">
+						<span class="mar_rt_12 col_nine ">展开</span><img class="icon" src="__HOME__/img/icon_right.png" width="6" height="11" alt="">
+					</div>
+				</div>
+				<div class="scenic_cont ">
+					{$re.content}
+				</div>
+			</div>
+		</div>
+
+		<!-- 地图显示 -->
+		<div class="p_12">
+			<iframe class="bd_radius" src="{:url('Car/map',array('id'=>$re['id']))}" width="100%" height="100" frameborder="0"></iframe>
+		</div>
+
+		<div class="pad_12">
+			<h5 class="mar_btm_6">地址</h5>
+			<div class="mar_btm_12">{$re.addr}</div>
+		</div>
+
+		<div class="pad_12">
+			<h5 class="mar_btm_6">联系电话</h5>
+			<div class="mar_btm_12">{$re.phone}</div>
+		</div>
+
+		<div class="pad_12">
+			<h5 class="mar_btm_6">热门车型</h5>
+			<ul>
+			{volist name="res" id="v"}
+				<li class="flex_normal pd_12 bd_btm">
+					<div class="hotel_piao bd_radius mar_rt_12 bg_cover" style="background-image:url({$v.image});"></div>
+					<div class="flex_1">
+						<div class="hotel_wrap">
+							<h3>{$v.title}</h3>
+							<div class="flex_1  col_nine">{$v.marray}</div>
+							<div class="am-text-right  col_nine">
+								<span class="col_main am-text-default">￥{$v.price}</span> / 日均
+							</div>
+						</div>
+					</div>
+				</li>
+				{/volist}
+			</ul>
+			<div class="no_data">暂无更多车型~</div>
+		</div>
+
+	</div>
+
+	<script>
+		function showMore(ele1, ele2) {
+			if (ele1.hasClass('active') && ele2.hasClass('active')) {
+				ele1.removeClass('active')
+				ele1.find('span').html('展开')
+				ele2.removeClass('active')
+			} else {
+				ele1.addClass('active')
+				ele1.find('span').html('收起')
+				ele2.addClass('active')
+			}
+		}
+
+		$(function () {
+
+			// 简介
+			$('.scenic_intro').click(function () {
+				showMore($(this), $('.scenic_cont'))
+			})
+			
+		})
+	</script>
+
+</body>
+
+</html>

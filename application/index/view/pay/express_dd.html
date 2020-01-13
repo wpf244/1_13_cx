@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{include file="public:header"}
+
+<body class="pad_btm">
+
+	<!-- 返回 -->
+	<div class="back_box">
+			<ul class="bread">
+					<li>
+					 <a href="{:url('Index/index')}">首页</a>&nbsp;&gt;
+					</li>
+				
+					<li>
+					<a href="javascript:;">支付中心</a>
+					</li>
+				   </ul>
+	</div>
+
+	<div class="ticket_tai bd_btm am-text-center am-text-lg font_bold">收银台</div>
+
+	<div class="flex_between p_12 bd_btm am-text-center">
+		<span>运费</span>
+		<span class="col_main am-text-lg font_bold">￥{$re.fare}</span>
+	</div>
+
+	<a href="javascript:;" class="flex_between p_12 bd_btm">
+		<div class="flex_normal">
+			<img class="mar_rt_12" src="__HOME__/img/icon_return_1.png" width="24" height="24" alt="">
+			<div class="flex_1">
+				<h4 class="mar_btm_6">账户余额</h4>
+				<div class=" col_nine">{$user.money}</div>
+			</div>
+		</div>
+		<img src="__HOME__/img/icon_right.png" width="6" height="11" alt="">
+	</a>
+	
+	<div class="confirm_wrap p_12">
+		<a onclick="pay()" class="confirm_btn mar_btm_12">立即支付</a>
+	</div>
+
+<script>
+	function pay() {
+		var goods_money=parseFloat("{$re.fare}");
+
+		var user_money=parseFloat("{$user.money}");
+
+		var id = "{$re.id}";
+
+		if(goods_money > user_money){
+			layer.msg("账户余额不足，请联系客服充值");return false;
+		}
+
+		$.ajax({
+			type:"post",
+			url:"{:url('Pay/pay_express')}",
+			datatype:"text",
+			data:{id:id},
+			success:function (re) {
+				if(re == 0){
+					layer.msg("支付失败，账号余额不足，请联系客服充值");
+
+					setTimeout("location.href=\"{:url('Users/indexs')}\"",2000);
+				}
+				if(re == 1){
+					layer.msg("支付成功");
+
+					setTimeout("location.href=\"{:url('Users/indexs')}\"",2000);
+				}
+
+				if(re == 2){
+					layer.msg("支付失败，系统繁忙，请稍后再试");
+
+					setTimeout("location.href=\"{:url('Index/index')}\"",2000);
+				}
+
+				if(re == 3){
+					layer.msg("支付失败，非法操作");
+
+					setTimeout("location.href=\"{:url('Index/index')}\"",2000);
+				}
+
+				if(re == 4){
+					layer.msg("支付失败，订单状态异常");
+
+					setTimeout("location.href=\"{:url('Users/indexs')}\"",2000);
+				}
+			}
+
+		})
+
+
+	}
+
+
+</script>
+
+</body>
+
+</html>

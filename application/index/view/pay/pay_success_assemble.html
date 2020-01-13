@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{include file="public:header"}
+
+<body>
+
+	<!-- 返回 -->
+	<div class="back_box">
+		
+		<ul class="bread">
+				<li>
+				 <a href="{:url('Index/index')}">首页</a>&nbsp;&gt;
+				</li>
+			
+				<li>
+				<a href="javascript:;">邀请好友</a>
+				</li>
+			   </ul>
+	</div>
+
+{include file="public:header"}
+
+	<div class="p_12">
+		<div class="flex_center pd_12 bd_btm mar_btm_12">
+			<div class="piao_zhu">
+				<img src="{$user.image}" class="bd_radius_50" width="50" height="50" alt=""><span>拼主</span>
+			</div>
+			{empty name="$users" }	
+
+			<img src="__HOME__/img/thumb_none.png" class="bd_radius_50 bd_all" width="50" height="50" alt="">
+
+			{else /}
+
+			  {volist name="users" id="vu"}	
+				<img src="{$vu.image}" class="bd_radius_50 bd_all" width="50" height="50" alt="">
+				{/volist}
+			
+
+			{/empty}	
+		</div>
+	   {if condition="$num neq 0"}	
+		<div class="count_down pad_12 bg_normal bd_radius am-center am-text-center" style="width: 120px;"><span class="hour_num">00</span>:<span class="min_num">00</span>:<span class="sec_num">00</span></div>		
+		{/if}
+	</div>
+
+	<div class="bd_btm_10">
+		<div class="p_12 am-text-center">
+				{if condition="$num neq 0"}		<div class="mar_btm_12">还差<span class="col_main">{$num}</span>人，赶快邀请好友来拼单吧</div>  {else /}<div class="mar_btm_12">拼团成功</div>{/if}
+			<a href="javascript:;" class="am-btn am-btn-danger am-btn-block bd_radius mar_btm_12" id="wx">邀请好友拼单</a>
+			<a href="{:url('Assemble/index')}" class="am-btn am-btn-danger am-btn-block bg_transparent bd_radius col_main" style="color: #eb4949;">回到首页</a>
+		</div>
+	</div>
+	
+	<div class="pad_12">		
+<!-- 
+		<a href="javascript:;" class="pd_12 bd_btm flex_between">
+			<h6>订单详情</h6><img src="__HOME__/img/icon_right.png" width="6" height="11" alt="">
+		</a> -->
+
+		<div class="pd_12 bd_btm flex_between">
+			<h6 class="mar_rt_12">拼团规则</h6><span class=" col_nine">{$rule.desc}</span>
+		</div>
+
+		<div class="">
+			<h5 class="am-text-lg mar_top_12">精彩推荐</h5>
+			
+		 {volist name="res" id="v" key="k" }
+			<a href="{:url('Assemble/detail',array('id'=>$v['id']))}" class="flex_normal pd_12 bd_btm">
+				<div class="hotel_piao bd_radius mar_rt_12 bg_cover" style="background-image:url({$v.image});">
+					{if condition="$k lt 4"}<span class="kind_tag">top{$k}</span>{/if}
+				</div>
+				<div class="flex_1">
+					<div class="hotel_wrap">
+						<h3>{$v.name}</h3>
+						<div class="flex_1  col_nine">{$v.tag}</div>
+						<div class="flex_between">
+							<span class="col_deputy">拼团</span>
+							<div class="col_nine ">价格<span class="col_main mar_rt_6 am-text-default">￥{$v.price}</span>起
+							</div>
+						</div>
+					</div>
+				</div>
+			</a>
+		  {/volist}
+		</div>
+
+		<div class="no_data">暂无更多数据~</div>
+
+	</div>
+
+	<script src="__HOME__/js/countDown.js"></script>
+	
+	<script>
+		$(function(){
+			//倒计时
+			var date = "{$date}";
+			$(".count_down").countDown({
+				endTimeStr: date, //结束时间
+				daySelector: ".day_num",
+				hourSelector: ".hour_num",
+				minSelector: ".min_num",
+				secSelector: ".sec_num"
+			})
+			$("#wx").click(function(){
+				layer.msg("点击右上角按钮,发送给朋友或分享到朋友圈");
+			})
+		})
+	</script>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<script>
+  var data = {$signPackage};
+  var id = "{$re.id}";
+  var image = "{$re.image}";
+  var title = "{$title.desc}";
+  var desc = "{$desc.desc}";
+  var url = "{$urls}";
+  wx.config({
+      debug: false,
+      appId: data.appId,
+      timestamp: data.timestamp,
+      nonceStr: data.nonceStr,
+      signature: data.signature,
+      jsApiList: ['checkJsApi','onMenuShareTimeline','onMenuShareAppMessage','startRecord',
+                  'stopRecord',
+                  'onVoiceRecordEnd',
+                  'playVoice',
+                  'onVoicePlayEnd',
+                  'pauseVoice',
+                  'stopVoice',
+                  'uploadVoice',
+                  'downloadVoice']
+  });
+  wx.ready(function(){
+	  wx.onMenuShareAppMessage({
+		  title: title, // 分享标题
+		  desc: desc, // 分享描述
+		  link: url+'/index/index/assemble/id/'+id, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+		  imgUrl: url+image, // 分享图标
+		  type: '', // 分享类型,music、video或link，不填默认为link
+		  dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+		  success: function () {
+		  // 用户点击了分享后执行的回调函数
+		   
+		  }
+		});
+	  wx.onMenuShareTimeline({
+		    title: title, // 分享标题
+		    link: url+'/index/index/assemble/id/'+id, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+		    imgUrl: url+image, // 分享图标
+		    success: function () {
+		    // 用户点击了分享后执行的回调函数
+		},
+	  });
+	});
+
+
+
+
+
+
+</script>
+</body>
+
+</html>
