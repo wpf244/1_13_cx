@@ -1,6 +1,6 @@
 <?php
 
-namespace app\admin\controller;
+namespace app\agent\controller;
 
 
 use think\Request;
@@ -17,19 +17,20 @@ class Login extends Common
             $this->error('验证码不正确');exit;
         }
         $unm=input('post.username');
-        $pwd=md5(input('post.password'));
-        $re=db("Admin")->where(array('username'=>$unm,'pwd'=>$pwd))->find();
+        $pwd=input('post.password');
+        $re=db("user")->where(['phone'=>$unm,'pwd'=>$pwd,'is_delete'=>0,'type'=>2])->find();
+
         if($re){
-            session('uid',$re['id']);
+            session('aid',$re['uid']);
             \session('username',$re['username']);
             $time = date('Y-m-d H:i:s',time());
-            $re_pre = db("Admin")->where("id=1")->find();
+            $re_pre = db("user")->where("uid",$re['uid'])->find();
             $pretime = $re_pre['curtime'];
             $ip=Request::instance()->ip();
             $data['pretime']=$pretime;
             $data['curtime']=$time;
             $data['ip']=$ip;
-            $res = db("Admin")->where("id=1")->update($data);
+            $res = db("user")->where("uid",$re['uid'])->update($data);
             
             //增加操作日志
             $arr=array();
@@ -45,7 +46,7 @@ class Login extends Common
         }
     }
     public function logout(){
-        session("uid",null);
+        session("aid",null);
         $this->redirect('Login/index');
     }
     function modify(){
@@ -55,19 +56,19 @@ class Login extends Common
         if (! defined('ACTION_NAME')) {
             define('ACTION_NAME', $this->request->action());
         }
-        $id=\session('uid');
-        $re=db("Admin")->where("id=$id")->find();
+        $id=\session('aid');
+        $re=db("user")->where("uid=$id")->find();
         $this->assign("re",$re);
         return view('modify');
     }
     function save(){
-        $ob=db("Admin");
-        $old_pwd=md5(input('old_pwd'));
+        $ob=db("user");
+        $old_pwd=input('old_pwd');
         $id=input('id');
-        $re=$ob->where("id=$id and pwd='$old_pwd'")->find();
+        $re=$ob->where("uid=$id and pwd='$old_pwd'")->find();
         if($re){
-            $data['pwd']=md5(input('pwd'));
-            $res=$ob->where("id=$id")->update($data);
+            $data['pwd']=input('pwd');
+            $res=$ob->where("uid=$id")->update($data);
             if($res){
                 $this->success("修改成功！");
             }else{

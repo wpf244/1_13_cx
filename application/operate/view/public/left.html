@@ -1,0 +1,209 @@
+<div id="sidebar" class="sidebar                  responsive                    ace-save-state">
+  <script type="text/javascript">
+    try{ace.settings.loadState('sidebar')}catch(e){}
+  </script>
+
+  <div class="sidebar-shortcuts" id="sidebar-shortcuts">
+    <div class="sidebar-shortcuts-large" id="sidebar-shortcuts-large">
+      <a  class="btn btn-success" href="{:url('Index/index/index')}" target="_blank" title="前台首页">
+        <i class="ace-icon fa fa-globe"></i>
+      </a>
+
+      <a class="btn btn-info" href="javascript:;" data-rel="tooltip" data-placement="bottom" title="添加文章">
+        <i class="ace-icon fa fa-pencil"></i>
+      </a>
+
+      <a class="btn btn-warning" href="javascript:;" data-rel="tooltip" data-placement="bottom" title="">
+        <i class="ace-icon fa fa-wrench"></i>
+      </a>
+
+      <button class="btn btn-danger tooltip-error" id="cache" data-rel="tooltip" data-placement="bottom" title="清除缓存">
+        <i class="ace-icon fa fa-refresh"></i>
+      </button>
+    </div>
+<script>
+$(function(){
+	$("#cache").on(ace.click_event,function(){
+	    layer.confirm('确认要清除缓存?',{icon: 3},function (index) {
+	    	$.post("{:url('Index/clearruntime')}",{user:1},function(data){
+	    		layer.alert("缓存清理成功");
+	    		});
+	      layer.close(index);
+	    });
+	  })
+	
+	});
+</script>
+    <div class="sidebar-shortcuts-mini" id="sidebar-shortcuts-mini">
+      <span class="btn btn-success"></span>
+
+      <span class="btn btn-info"></span>
+
+      <span class="btn btn-warning"></span>
+
+      <span class="btn btn-danger"></span>
+    </div>
+  </div><!-- /.sidebar-shortcuts -->
+
+  <ul class="nav nav-list" style="z-index: 999999;
+  position: relative;">
+    {if condition="CONTROLLER_NAME eq 'Index'"}<li class="active">{else /}<li class="">{/if}
+      <a href="{:url('Index/index')}">
+        <i class="menu-icon fa fa-tachometer"></i>
+        <span class="menu-text"> 控制台 </span>
+      </a>
+
+      <b class="arrow"></b>
+    </li>
+
+    {if condition="CONTROLLER_NAME eq 'User'"}<li class="open">{else /}<li class="">{/if}
+      <a href="#" class="dropdown-toggle">
+        <i class="menu-icon fa fa-user"></i>
+        <span class="menu-text"> 账号管理 </span>
+        <b class="arrow fa fa-angle-down"></b>
+      </a>
+
+      <b class="arrow"></b>
+      <ul class="submenu">
+       {if condition="ACTION_NAME eq 'lister'"}<li class="active">{else /}<li class="">{/if}
+          <a href="{:url('User/lister')}">
+            <i class="menu-icon fa fa-caret-right"></i>
+            代理商列表
+          </a>
+
+          <b class="arrow"></b>
+        </li>
+
+        {if condition="ACTION_NAME eq 'index'"}<li class="active">{else /}<li class="">{/if}
+          <a href="{:url('User/index')}">
+            <i class="menu-icon fa fa-caret-right"></i>
+            客户列表
+          </a>
+
+          <b class="arrow"></b>
+        </li>
+      </ul>
+    </li>
+    
+   <!--  {if condition="CONTROLLER_NAME eq 'Shops'"}<li class="open">{else /}<li class="">{/if}
+      <a href="#" class="dropdown-toggle">
+        <i class="menu-icon fa fa-balance-scale"></i>
+        <span class="menu-text"> 店铺管理 </span>
+        <b class="arrow fa fa-angle-down"></b>
+      </a>
+
+      <b class="arrow"></b>
+      <ul class="submenu">
+       {if condition="ACTION_NAME eq 'lister'"}<li class="active">{else /}<li class="">{/if}
+          <a href="{:url('Shops/lister')}">
+            <i class="menu-icon fa fa-caret-right"></i>
+            店铺列表
+          </a>
+
+          <b class="arrow"></b>
+        </li>
+        
+         {if condition="ACTION_NAME eq 'add'"}<li class="active">{else /}<li class="">{/if}
+          <a href="{:url('Shops/add')}">
+            <i class="menu-icon fa fa-caret-right"></i>
+            添加店铺
+          </a>
+
+          <b class="arrow"></b>
+        </li>
+
+      </ul>
+    </li>
+
+       {if condition="CONTROLLER_NAME eq 'Goods'"}<li class="open">{else /}<li class="">{/if}
+      <a href="#" class="dropdown-toggle">
+        <i class="menu-icon fa fa-paper-plane"></i>
+        <span class="menu-text"> 商品管理 </span>
+
+        <b class="arrow fa fa-angle-down"></b>
+      </a>
+
+      <b class="arrow"></b>
+
+      <ul class="submenu">
+        {if condition="ACTION_NAME eq 'lister'"}<li class="active">{else /}<li class="">{/if}
+          <a href="{:url('Goods/lister')}">
+            <i class="menu-icon fa fa-caret-right"></i>
+            商品列表
+          </a>
+
+          <b class="arrow"></b>
+        </li>
+     {if condition="ACTION_NAME eq 'type'"}<li class="active">{else /}<li class="">{/if}
+          <a href="{:url('Goods/goods_type')}">
+            <i class="menu-icon fa fa-caret-right"></i>
+            商品分类
+          </a>
+
+          <b class="arrow"></b>
+        </li>
+     
+      </ul>
+
+    </li>
+
+    {if condition="CONTROLLER_NAME eq 'Carte'"}<li class="open">{else /}<li class="">{/if}
+      <a href="#" class="dropdown-toggle">
+        <i class="menu-icon fa fa-reorder"></i>
+        <span class="menu-text"> 菜单管理 </span>
+
+        <b class="arrow fa fa-angle-down"></b>
+      </a>
+
+      <b class="arrow"></b>
+
+      <ul class="submenu">
+        {if condition="ACTION_NAME eq 'lister'"}<li class="active">{else /}<li class="">{/if}
+          <a href="{:url('Carte/lister')}">
+            <i class="menu-icon fa fa-caret-right"></i>
+            后台模块
+          </a>
+
+          <b class="arrow"></b>
+        </li>
+    
+     
+      </ul>
+
+    </li>
+    
+    {if condition="CONTROLLER_NAME eq 'User'"}<li class="open">{else /}<li class="">{/if}
+        <a href="#" class="dropdown-toggle">
+          <i class="menu-icon fa fa-reorder"></i>
+          <span class="menu-text"> 管理员管理 </span>
+  
+          <b class="arrow fa fa-angle-down"></b>
+        </a>
+  
+        <b class="arrow"></b>
+  
+        <ul class="submenu">
+          {if condition="ACTION_NAME eq 'lister'"}<li class="active">{else /}<li class="">{/if}
+            <a href="{:url('User/lister')}">
+              <i class="menu-icon fa fa-caret-right"></i>
+              管理员列表
+            </a>
+  
+            <b class="arrow"></b>
+          </li>
+      
+       
+        </ul>
+  
+      </li> -->
+  
+  
+
+  
+    
+  </ul><!-- /.nav-list -->
+
+  <div class="sidebar-toggle sidebar-collapse" id="sidebar-collapse">
+    <i id="sidebar-toggle-icon" class="ace-icon fa fa-angle-double-left ace-save-state" data-icon1="ace-icon fa fa-angle-double-left" data-icon2="ace-icon fa fa-angle-double-right"></i>
+  </div>
+</div>

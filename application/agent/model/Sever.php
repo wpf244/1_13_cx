@@ -1,6 +1,6 @@
 <?php
 
-namespace app\admin\model;
+namespace app\agent\model;
 
 use think\Model;
 use think\Request;

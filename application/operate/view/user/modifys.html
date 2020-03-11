@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+{include file="public:header"}
+
+<body class="no-skin">
+    <!--头部-->
+    {include file="public:nav"}
+
+    <div class="main-container ace-save-state" id="main-container">
+        <!--菜单-->
+        <script type="text/javascript">
+            try {
+                ace.settings.loadState('main-container')
+            } catch (e) {}
+        </script>
+
+        {include file="public:left"}
+
+        <div class="main-content">
+            <div class="main-content-inner">
+                <div class="breadcrumbs ace-save-state" id="breadcrumbs">
+                    <ul class="breadcrumb">
+                        <li>
+                            <i class="ace-icon fa fa-home home-icon"></i>
+                            <a href="{:url('Index/index')}">首页</a>
+                        </li>
+                        <li class="active">编辑会员</li>
+                    </ul><!-- /.breadcrumb -->
+
+                </div>
+
+                <div class="page-content">
+
+                    {include file="public:set"}
+
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="col-sm-10 col-sm-offset-1">
+                                <form id="logoForm" class="form-horizontal" action="{:url('User/save')}" method="post" enctype="multipart/form-data">
+                                    <div class="row">
+                                        <div class="col-sm-7">
+                                            <div class="widget-box transparent">
+                                                <div class="widget-header widget-header-flat">
+                                                    <h4 class="widget-title"><i class="ace-icon fa fa-leaf green"></i>会员信息</h4>
+                                                </div>
+                                                <div class="widget-body">
+                                                    <div class="widget-main">
+
+
+                                                        <div class="form-group">
+                                                            <label class="col-sm-2 control-label no-padding-right" for="">代理商姓名</label>
+                                                            <div class="col-sm-10">
+                                                                <input class="form-control" type="text" name="nickname"
+                                                                placeholder="请输入代理商姓名" value="{$re.nickname}" required>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label class="col-sm-2 control-label no-padding-right" for="">手机号码</label>
+                                                            <div class="col-sm-10">
+                                                                <input class="form-control" type="text" placeholder="请输入手机号码" readonly name="phone" value="{$re.phone}" required>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label class="col-sm-2 control-label no-padding-right" for="">登录密码</label>
+                                                            <div class="col-sm-10">
+                                                                <input class="form-control" type="text" name="pwd" placeholder="请输入登录密码" value="{$re.pwd}" required>
+                                                            </div>
+                                                        </div>
+
+
+                                                        <div class="form-group">
+                                                        <label class="col-sm-2 control-label no-padding-right" for="">所属区域</label>
+                                                        <div class="col-sm-10">
+                                                            <input class="form-control" type="text" placeholder="请输入所属区域" name="addr" value="{$re.addr}" required>
+                                                        </div>
+                                                    </div>
+
+                                                 
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="clearfix form-actions">
+                                        <input  name="uid" type="hidden" value="{$re.uid}" />
+                                        <div class="col-md-offset-4 col-md-9">
+                                            <button class="btn btn-info" type="submit">
+                                                <i class="ace-icon fa fa-floppy-o bigger-110"></i>
+                                                保存
+                                            </button>
+                                            <a class="btn" href="javascript:history.go(-1)">
+                                                <i class="ace-icon fa fa-undo bigger-110"></i>
+                                                返回
+                                            </a>
+                                        </div>
+                                    </div>
+                                </form>
+                                <!-- PAGE CONTENT BEGINS -->
+                            </div>
+                            <!-- PAGE CONTENT ENDS -->
+                        </div><!-- /.col -->
+                    </div><!-- /.row -->
+                </div><!-- /.page-content -->
+            </div>
+        </div><!-- /.main-content -->
+
+       {include file="public:footer"}
+
+        <a href="#" id="btn-scroll-up" class="btn-scroll-up btn btn-sm btn-inverse">
+            <i class="ace-icon fa fa-angle-double-up icon-only bigger-110"></i>
+        </a>
+    </div><!-- /.main-container -->
+
+
+    <script>
+        jQuery(function ($) {
+            $('[data-rel=tooltip]').tooltip();
+
+            $("#hide-option").tooltip({
+                hide: {
+                    effect: "explode",
+                    delay: 250
+                }
+            });
+
+        })
+    </script>
+
+
+    <script>
+        $(function () {
+            $('#thumb').ace_file_input({
+                style: 'well',
+                btn_choose: '封面图',
+                btn_change: null,
+                no_icon: 'ace-icon fa fa-picture-o',
+                droppable: true,
+                thumbnail: 'fit' //large | fit
+                    //,icon_remove:null//set null, to hide remove/reset button
+                    /**,before_change:function(files, dropped) {
+						//Check an example below
+						//or examples/file-upload.html
+						return true;
+					}*/
+                    /**,before_remove : function() {
+						return true;
+					}*/
+                    ,
+                preview_error: function (filename, error_code) {
+                    //name of the file that failed
+                    //error_code values
+                    //1 = 'FILE_LOAD_FAILED',
+                    //2 = 'IMAGE_LOAD_FAILED',
+                    //3 = 'THUMBNAIL_FAILED'
+                    //alert(error_code);
+                }
+
+            }).on('change', function () {
+                //console.log($(this).data('ace_input_files'));
+                //console.log($(this).data('ace_input_method'));
+            });
+
+            $("#article").ajaxForm({
+                // url: 'links.html',
+                // type: 'post',
+                // success: fun
+            })
+        });
+
+        //响应请求回调
+        function fun() {
+
+        }
+    </script>
+    <script>
+        $(function () {
+            $('#logoForm').ajaxForm({
+                beforeSubmit: checkForm, // 此方法主要是提交前执行的方法，根据需要设置
+                success: complete, // 这是提交后的方法
+                dataType: 'json'
+            });
+
+            function checkForm() {
+                var phone = $('input[name=phone]').val();
+
+                var phone_reg = /^[1][3,4,5,6,7,8,9][0-9]{9}$/;
+
+                if (!phone_reg.test(phone)) {
+                    layer.msg("请输入正确的手机号码");
+                    return false;
+                }
+
+            }
+
+            function complete(data) {
+                if (data.code == 1) {
+                    layer.alert(data.msg, {
+                        icon: 6
+                    }, function (index) {
+                        layer.close(index);
+                        window.location.href = data.url;
+                    });
+
+                } else {
+                    layer.alert(data.msg, {
+                        icon: 5
+                    }, function (index) {
+                        layer.close(index);
+                        return false;
+                    });
+
+                }
+            }
+
+        });
+    </script>
+
+</body>
+
+</html>
